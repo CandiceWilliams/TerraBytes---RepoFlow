@@ -13,41 +13,33 @@ const GithubIcon = () => (
 );
 
 export default function RepoLink() {
-  const [repoUrl, setRepoUrl] = useState("");
 
-  // Handles changes to the input field, updating the state
-  const handleInputChange = (event) => {
-    setRepoUrl(event.target.value);
-  };
-
-  // Handles the form submission
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!repoUrl.trim()) {
-      alert("Please enter a GitHub repository URL.");
-      return;
-    }
-    axios
-      .post("http://localhost:8000/api/recieve-repo", { url: repoUrl })
-      .then((response) => {
-        if (typeof response.data.err === "boolean") {
-          // Call the prop function to App.jsx, pass true if err is false (success)
-          if (typeof props.onRepoAnalyzed === "function") {
-            props.onRepoAnalyzed(!response.data.err);
-          }
-          if (!response.data.err) {
-            alert(response.data.message || "Repository analyzed successfully!");
-          } else {
-            alert("Repository not found.");
-          }
-        } else {
-          alert("Unexpected response from server.");
+    const [repoUrl, setRepoUrl] = useState('');
+    
+      // Handles changes to the input field, updating the state
+      const handleInputChange = (event) => {
+        setRepoUrl(event.target.value);
+      };
+    
+      // Handles the form submission
+      const handleSubmit = async(event) => {
+        event.preventDefault();
+        if (!repoUrl.trim()) {
+          alert('Please enter a GitHub repository URL.');
+          return;
         }
-      })
-      .catch((error) => {
-        alert(error.response?.data?.error || "Failed to analyze repository.");
-      });
-  };
+        const response = await axios.post('http://127.0.0.1:8000/api/receive-repo', { repoUrl: repoUrl }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if(!response.data.err) {
+          alert('Repository URL received successfully!');
+        }
+        else {
+          alert('Repository URL is not valid. Please enter a valid GitHub repository URL.');
+        }
+      };
 
   return (
     <>

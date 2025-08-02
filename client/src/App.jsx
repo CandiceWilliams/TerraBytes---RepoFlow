@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import RepoLink from './RepoLink.jsx';
-import WorkSpace from './workspace.jsx';
+import WorkSpace from './WorkSpace.jsx';
 
 
 function App() {
