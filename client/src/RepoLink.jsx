@@ -1,4 +1,5 @@
 import axios from 'axios';
+import{ useState } from 'react';
 
 const GithubIcon = () => (
   <svg
@@ -25,13 +26,29 @@ export default function RepoLink() {
       // Handles the form submission
       const handleSubmit = (event) => {
         event.preventDefault();
+        if (!repoUrl.trim()) {
+          alert('Please enter a GitHub repository URL.');
+          return;
+        }
         axios.post('http://localhost:8000/api/recieve-repo', { url: repoUrl })
-            .then(response => {
+          .then(response => {
+            if (typeof response.data.err === 'boolean') {
+              // Call the prop function to App.jsx, pass true if err is false (success)
+              if (typeof props.onRepoAnalyzed === 'function') {
+                props.onRepoAnalyzed(!response.data.err);
+              }
+              if (!response.data.err) {
                 alert(response.data.message || 'Repository analyzed successfully!');
-            })
-            .catch(error => {
-                alert(error.response?.data?.error || 'Failed to analyze repository.');
-            });
+              } else {
+                alert('Repository not found.');
+              }
+            } else {
+              alert('Unexpected response from server.');
+            }
+          })
+          .catch(error => {
+            alert(error.response?.data?.error || 'Failed to analyze repository.');
+          });
       };
 
       return (
@@ -71,6 +88,7 @@ export default function RepoLink() {
             <button
               type="submit"
               className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
+              onClick={handleSubmit}
             >
               Analyze Repo
             </button>
