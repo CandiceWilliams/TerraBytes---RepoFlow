@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Homepage from './pages/HomePage.jsx';
+import ChoicePage from './pages/ChoicePage.jsx';
 
 function App() {
   const [repo, setRepo] = useState(null);
@@ -14,12 +15,16 @@ function App() {
   return (
     <>
       {!repo ? (
+        // 1️⃣ Show your existing HomePage
         <Homepage onAnalyze={handleAnalyze} />
       ) : (
-        <div style={{ padding: '2rem', color: '#003052' }}>
-          <h2>Analyzing repo: {repo}</h2>
-          {/* You can replace this with the repo analysis screen */}
-        </div>
+        // 2️⃣ Once the button is clicked, show ChoicePage
+        <ChoicePage
+          onSelect={(choice) => {
+            console.log('User wants to edit:', choice);
+            // later: set another state (e.g. `section`) to drive WorkSpace
+          }}
+        />
       )}
     </>
   );
