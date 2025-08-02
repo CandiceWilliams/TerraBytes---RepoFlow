@@ -1,13 +1,14 @@
 # main.py
 
 import os
+import json
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Import the necessary functions from the separate files
-from repo_processor import process_repository
-from gemini_client import stageOne # <-- Now only importing the stageOne function
+from repoProcessor import process_repository
+from gemini import stageOne
 
 # Initialize the FastAPI application
 app = FastAPI(
@@ -40,11 +41,19 @@ os.makedirs(REPOS_DIR, exist_ok=True)
 
 
 # ----------------------------------------------------
-# Pydantic model definition must be in main.py
+# Pydantic models for request bodies
 # ----------------------------------------------------
 class RepoUrlRequest(BaseModel):
-    """Defines the expected structure of the incoming request body."""
+    """Defines the expected structure of the incoming request body for cloning a repository."""
     repoUrl: str
+
+class WorkspaceRequest(BaseModel):
+    """Defines the expected structure of a single workspace object."""
+    name: str
+    description: str
+    fileStructure: list[str]
+    returnPrompt: str
+    assumptions: str
 
 
 @app.post("/api/receive-repo")
@@ -76,6 +85,55 @@ async def receive_repo(request_body: RepoUrlRequest, background_tasks: Backgroun
         "tree_file": result['tree_file'],
         "err": False
     }
+
+
+# ----------------------------------------------------
+# New API endpoint to get the list of workspaces
+# ----------------------------------------------------
+@app.post("/api/get-workspaces")
+async def get_workspaces():
+    """
+    Reads the 'workspace.json' file, converts it into a list of objects, and returns it.
+    """
+    workspace_file_path = "workspace.json"
+    
+    if not os.path.exists(workspace_file_path):
+        raise HTTPException(
+            status_code=404,
+            detail={"message": "Workspace file not found. Please process a repository first.", "err": True}
+        )
+    
+    try:
+        with open(workspace_file_path, "r", encoding="utf-8") as f:
+            workspaces = json.load(f)
+        return workspaces
+    except json.JSONDecodeError:
+        raise HTTPException(
+            status_code=500,
+            detail={"message": "Could not decode workspace.json. The file is malformed.", "err": True}
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail={"message": f"An unexpected error occurred while reading the workspace file: {e}", "err": True}
+        )
+
+# ----------------------------------------------------
+# New API endpoint to receive a selected workspace
+# ----------------------------------------------------
+@app.post("/api/select-workspace")
+async def select_workspace(workspace_data: WorkspaceRequest):
+    """
+    Receives a single workspace object from the frontend.
+    """
+    # For now, we'll just return a success message and the received data.
+    # Future logic to process this selected workspace would go here.
+    return {
+        "message": "Workspace received successfully!",
+        "workspace_data": workspace_data,
+        "err": False
+    }
+
 
 # A simple example route to test that the API is working
 @app.get("/")
