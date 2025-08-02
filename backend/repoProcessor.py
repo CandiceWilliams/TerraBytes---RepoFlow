@@ -95,7 +95,6 @@ def process_repository(repo_url: str):
     # After successful cloning, create the tree structure
     tree_structure = create_tree_structure(target_dir)
     print("Generated tree structure:")
-    print(tree_structure)
 
     # Define the path for the tree structure file
     tree_file_path = os.path.join(os.path.dirname(__file__), "tree_structure.txt")

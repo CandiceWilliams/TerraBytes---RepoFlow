@@ -32,13 +32,13 @@ A name: A short title to be used as a button label.
 
 A description: A 1–2 sentence summary for users to understand what this part does.
 
-The list of files/folders associated with this workspace.
+The list of files associated with this workspace. **This list MUST ONLY contain file paths and NOT directory paths.**
 
 A returnPrompt: A single-sentence identifier that can be used to pass back what workspace the user clicked.
 
 Any assumptions you made about this workspace’s purpose or boundaries.
 
-🛑 Limit the number of workspaces to a minimum of 2 and a maximum of 20.
+🛑 Limit the number of workspaces to a minimum of 2 and a maximum of 30. Try to manage workspaces smartly, having more workspaces but where each one is more focused to the core of the workspace is important. Keeping fewer files in the workspace makes the later process more efficient, so it's recommended to have specific workspaces but not so specific that they become useless. Try to hit that under 12 file mark for each workspace if you can't, you can go slightly up.
 📦 Output must be a strict JSON array with no extra explanation outside the JSON.
 Each object in the array must follow this structure:
 
@@ -53,7 +53,7 @@ Only return valid JSON. No markdown, no prose, no commentary — just the array.
 """
 
 
-def stageOne(treeStructurePath: str) -> str:
+def stageOne(treeStructurePath: str, workspaceFilePath: str) -> str:
     """
     Generates content using an LLM by combining a prompt with the content of a
     tree structure/README file and stores the response as a JSON file.
@@ -61,6 +61,7 @@ def stageOne(treeStructurePath: str) -> str:
     Args:
         treeStructurePath: The path to the file containing the
                            combined tree structure and README text.
+        workspaceFilePath: The path where the output JSON file will be saved.
 
     Returns:
         A success message indicating the response has been saved.
@@ -103,18 +104,14 @@ def stageOne(treeStructurePath: str) -> str:
         # Extract the JSON text from the response
         json_output = response.text
 
-        # Define the path for the output JSON file in the same directory as this script
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        workspace_file_path = os.path.join(script_dir, "workspace.json")
-
-        # Write the JSON output to the file
-        with open(workspace_file_path, "w", encoding="utf-8") as json_file:
+        # Write the JSON output to the file using the provided path
+        with open(workspaceFilePath, "w", encoding="utf-8") as json_file:
             # We use json.loads and json.dump to re-format it nicely
             parsed_json = json.loads(json_output)
             json.dump(parsed_json, json_file, indent=2)
         
-        print(f"\nLLM Analysis Result saved to {workspace_file_path}")
-        return f"LLM analysis completed. The response has been saved to {workspace_file_path}."
+        print(f"\nLLM Analysis Result saved to {workspaceFilePath}")
+        return f"LLM analysis completed. The response has been saved to {workspaceFilePath}."
         
     except Exception as e:
         print(f"Error generating content or saving file: {e}")

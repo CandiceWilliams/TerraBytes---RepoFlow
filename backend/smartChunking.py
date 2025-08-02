@@ -46,7 +46,7 @@ Avoid redundancy across chunks.
 Assume this data will be stored in a vector DB and used later for retrieval-based reasoning by another LLM, which will ask questions to understand or extend the code.
 """
 
-def smart_chunking(repo_path: str, file_paths: list[str]):
+def smart_chunking(repo_path: str, file_paths: list[str], db_file_path: str):
     """
     Chunks code files using an LLM and stores them in a FAISS vector database.
     Includes a fallback for files that cannot be processed by the LLM.
@@ -54,12 +54,10 @@ def smart_chunking(repo_path: str, file_paths: list[str]):
     Args:
         repo_path: The absolute path to the cloned repository.
         file_paths: A list of file paths (relative to the repo root) to chunk.
+        db_file_path: The absolute path where the vector database file will be saved.
     """
     print("Starting smart code chunking process...")
     all_documents = []
-
-    # Get the absolute path for the vector database file
-    db_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "chunks.vector")
     
     # Initialize FAISS and the vector store
     # The default Gemini embedding model has a dimension of 768.
