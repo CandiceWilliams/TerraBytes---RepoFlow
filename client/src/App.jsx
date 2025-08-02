@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="home">
-      <img src="/cat-logo.png" alt="RepoFlow logo" className="logo" />
+      <img src="/logo.png" alt="RepoFlow logo" className="logo" />
 
       <h1 className="title">RepoFlow</h1>
 
