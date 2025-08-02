@@ -1,0 +1,91 @@
+terrabytes---repoflow/
+├── README.md
+├── .gitignore
+├── docker-compose.yml (optional)
+├── requirements.txt (or pyproject.toml)
+├── package.json (workspace config)
+│
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── index.html
+│   ├── .env.example
+│   ├── .env.local
+│   ├── src/
+│   │   ├── main.jsx
+│   │   ├── App.jsx
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   └── features/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   ├── utils/
+│   │   ├── contexts/
+│   │   ├── assets/
+│   │   └── styles/
+│   ├── public/
+│   └── dist/ (build output)
+│
+├── backend/
+│   ├── requirements.txt
+│   ├── .env.example
+│   ├── .env
+│   ├── main.py
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   ├── database.py
+│   │   │   └── security.py
+│   │   ├── api/
+│   │   │   ├── __init__.py
+│   │   │   ├── routes/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── gemini.py
+│   │   │   │   ├── rag.py
+│   │   │   │   └── subprocess_tasks.py
+│   │   │   └── dependencies.py
+│   │   ├── models/
+│   │   │   ├── __init__.py
+│   │   │   └── schemas.py
+│   │   ├── services/
+│   │   │   ├── __init__.py
+│   │   │   ├── gemini_service.py
+│   │   │   ├── rag_service.py
+│   │   │   ├── mongodb_service.py
+│   │   │   └── subprocess_service.py
+│   │   ├── utils/
+│   │   │   ├── __init__.py
+│   │   │   └── helpers.py
+│   │   └── tests/
+│   │       ├── __init__.py
+│   │       ├── test_api.py
+│   │       └── test_services.py
+│   ├── scripts/
+│   │   ├── setup.py
+│   │   └── data_processing/
+│   └── logs/
+│
+├── shared/
+│   ├── types/
+│   │   └── api_types.ts
+│   ├── constants/
+│   └── schemas/
+│
+├── docs/
+│   ├── API.md
+│   ├── SETUP.md
+│   └── CONTRIBUTING.md
+│
+├── scripts/
+│   ├── setup.sh
+│   ├── dev.sh
+│   └── deploy.sh
+│
+└── .github/ (or .gitlab/)
+    └── workflows/
+        ├── frontend.yml
+        └── backend.yml
