@@ -25,7 +25,7 @@ export default function RepoLink() {
       // Handles the form submission
       const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/api/recieve-repo', { url: repoUrl })
+        axios.post('http://localhost:8000/api/recieve-repo', { url: repoUrl })
             .then(response => {
                 alert(response.data.message || 'Repository analyzed successfully!');
             })
