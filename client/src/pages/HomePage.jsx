@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "@fontsource/poppins";
 
 function Homepage({ onAnalyze }) {
   const [repoUrl, setRepoUrl] = useState('');
@@ -11,7 +12,7 @@ function Homepage({ onAnalyze }) {
 
   return (
     <div style={styles.container}>
-      <img src="/cat-logo.png" alt="RepoFlow logo" style={styles.logo} />
+      <img src="/src/assets/logo-2.png" alt="logo.png" style={styles.logo} />
 
       <h1 style={styles.title}>RepoFlow</h1>
 
@@ -37,7 +38,7 @@ function Homepage({ onAnalyze }) {
 const styles = {
   container: {
     minHeight: '100vh',
-    backgroundColor: '#003052',
+    backgroundColor: '#012a4a',
     color: 'white',
     display: 'flex',
     flexDirection: 'column',
@@ -45,12 +46,11 @@ const styles = {
     justifyContent: 'center',
     padding: '1rem',
     textAlign: 'center',
-    fontFamily: '"Segoe UI", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
   },
   logo: {
     width: 160,
     height: 160,
-    borderRadius: '50%',
     marginBottom: 24,
     objectFit: 'cover',
   },
