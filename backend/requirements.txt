@@ -1,4 +1,9 @@
 fastapi
 uvicorn
-google-genai
-google.generativeai
+llama-index
+llama-index-embeddings-gemini
+llama-index-vector-stores-faiss
+faiss-cpu
+google-generativeai
+google-auth
+pydantic
