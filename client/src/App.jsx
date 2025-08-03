@@ -40,11 +40,11 @@ const MainFlow = () => {
   return (
     <div style={{ fontFamily: "Poppins, sans-serif" }}>
       {!repoReceived && !isProcessing ? (
-        <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center text-center" style={{ backgroundColor: '#04374f', color: 'white', padding: '2rem' }}>
+        <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center text-center" style={{ backgroundColor: '#012a4a', color: 'white', padding: '2rem' }}>
           <img
             src="src/assets/logo-2.png"
             alt="RepoFlow logo"
-            className="rounded-circle mb-4"
+            // className="rounded-circle mb-4"
             style={{ width: '160px', height: '160px', objectFit: 'cover' }}
           />
 
@@ -57,7 +57,7 @@ const MainFlow = () => {
           <RepoLink onRepoSubmitted={() => setIsProcessing(true)} />
         </div>
       ) : isProcessing ? (
-        <div className="d-flex align-items-center justify-content-center vh-100 bg-dark text-light">
+        <div className="d-flex align-items-center justify-content-center vh-100 text-light" style={{ backgroundColor: '#012a4a' }}>
           <div className="text-center">
             <div className="spinner-border text-info" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -84,4 +84,3 @@ function App() {
 }
 
 export default App;
-
