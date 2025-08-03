@@ -10,7 +10,7 @@ from fastapi import HTTPException
 
 # Define a base directory for storing cloned repositories
 # It's a good practice to use a dedicated directory for this.
-REPOS_DIR = "./cloned_repos"
+REPOS_DIR = "cloned_repos"
 os.makedirs(REPOS_DIR, exist_ok=True)
 
 

@@ -4,6 +4,7 @@ import os
 import json
 import time
 import shutil
+import atexit
 from llama_index.llms.gemini import Gemini
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,22 +16,25 @@ from gemini import stageOne
 from smartChunking import smart_chunking
 
 # Import LlamaIndex components for RAG
-from llama_index.core import VectorStoreIndex, StorageContext, load_index_from_storage
+# Import LlamaIndex components for RAG
+from llama_index.core import VectorStoreIndex, StorageContext, load_index_from_storage, Settings
 from llama_index.vector_stores.faiss import FaissVectorStore
 import faiss
 from llama_index.embeddings.gemini import GeminiEmbedding
-import google.generativeai as genai
-import numpy as np # Import numpy for loading binary faiss file
+from llama_index.llms.gemini import Gemini
+# import google.generativeai as genai
+#import numpy as np # Import numpy for loading binary faiss file
 
 # Configure the Gemini API key for the RAG query engine
 API_KEY = "AIzaSyDAkKSlkPXRva8ywSZKOUt0zpxReHKTweo"
-try:
+
+""" try:
     genai.configure(api_key=API_KEY)
 except KeyError:
     print("FATAL ERROR: 'GOOGLE_API_KEY' environment variable not set.")
     print("Please set it before running the script.")
     pass
-
+ """
 # Initialize the FastAPI application
 app = FastAPI(
     title="RepoFlow Backend",
@@ -60,6 +64,24 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPOS_DIR = os.path.join(BASE_DIR, "cloned_repos")
 os.makedirs(REPOS_DIR, exist_ok=True)
+
+# Cleanup function to remove repositories when app shuts down
+def cleanup_repos():
+    if os.path.exists(REPOS_DIR):
+        shutil.rmtree(REPOS_DIR, ignore_errors=True)
+    vector_db_dir = os.path.join(BASE_DIR, "vector_db_chunks")
+    if os.path.exists(vector_db_dir):
+        shutil.rmtree(vector_db_dir, ignore_errors=True)
+    # Clean up workspace and tree structure files
+    workspace_file = os.path.join(BASE_DIR, "workspace.json")
+    if os.path.exists(workspace_file):
+        os.remove(workspace_file)
+    tree_file = os.path.join(BASE_DIR, "tree_structure.txt")
+    if os.path.exists(tree_file):
+        os.remove(tree_file)
+
+# Register cleanup function to run on exit
+atexit.register(cleanup_repos)
 
 # Global variable to store the path of the most recently cloned repository
 LATEST_REPO_PATH = None
@@ -108,9 +130,17 @@ async def _load_rag_model():
 
     try:
         print("Loading RAG model into memory...")
+        
+        # Import Settings to configure default models
+        from llama_index.core import Settings
+        
         # Re-initialize the embedding model and LLM
         embed_model = GeminiEmbedding(api_key=API_KEY)
         llm = Gemini(api_key=API_KEY)
+        
+        # Set them as defaults in Settings
+        Settings.embed_model = embed_model
+        Settings.llm = llm
         
         # Load the Faiss index binary file first.
         faiss_index_from_file = faiss.read_index(faiss_index_path)
@@ -124,15 +154,16 @@ async def _load_rag_model():
             persist_dir=VECTOR_DB_DIR # This will load other files like docstore.json
         )
         
-        # Load the index from storage with both embed_model and llm
+        # Load the index from storage
         index = load_index_from_storage(
-            storage_context=storage_context, 
-            embed_model=embed_model,
-            llm=llm  # Specify Gemini as the LLM
+            storage_context=storage_context
         )
         
-        # Create a query engine and store it globally
-        RAG_QUERY_ENGINE = index.as_query_engine(similarity_top_k=3)
+        # Create a query engine and store it globally, explicitly passing the LLM
+        RAG_QUERY_ENGINE = index.as_query_engine(
+            similarity_top_k=3,
+            llm=llm
+        )
         print("RAG query engine is ready!")
 
     except Exception as e:

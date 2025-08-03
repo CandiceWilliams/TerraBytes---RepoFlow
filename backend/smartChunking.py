@@ -9,15 +9,19 @@ from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.vector_stores.faiss import FaissVectorStore
 import faiss
 from llama_index.embeddings.gemini import GeminiEmbedding
+from llama_index.llms.gemini       import Gemini
 
-# Configure the Gemini API key.
+# Configure the Gemini API key, LLM and embedder.
 API_KEY = "AIzaSyDAkKSlkPXRva8ywSZKOUt0zpxReHKTweo"
-try:
+embedder = GeminiEmbedding(api_key=API_KEY)
+llm = Gemini(api_key=API_KEY)
+
+"""try:
     genai.configure(api_key=API_KEY)
 except KeyError:
     print("FATAL ERROR: 'GOOGLE_API_KEY' environment variable not set.")
     print("Please set it before running the script.")
-    pass
+    pass"""
 
 # Initialize the Gemini model globally
 CHUNK_MODEL = genai.GenerativeModel('gemini-2.5-flash-lite')
@@ -189,7 +193,8 @@ def smart_chunking(repo_path: str, file_paths: list[str], vector_db_dir: str):
             index = VectorStoreIndex.from_documents(
                 all_documents,
                 storage_context=storage_context,
-                embed_model=GeminiEmbedding(api_key=API_KEY)
+                embed_model=GeminiEmbedding(api_key=API_KEY),
+                llm = Gemini(api_key=API_KEY)
             )
             print("Vector index created successfully")
             

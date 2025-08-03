@@ -1,9 +1,13 @@
 {
     "python-envs.pythonProjects": [],
     "cSpell.words": [
+        "docstore",
+        "embedder",
         "faiss",
         "genai",
         "generativeai",
-        "llms"
+        "llms",
+        "startpath",
+        "subindent"
     ]
 }

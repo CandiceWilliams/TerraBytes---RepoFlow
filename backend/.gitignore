@@ -2,3 +2,7 @@ tree_structure.txt
 cloned_repos/
 venv/
 __pycache__/
+vector_db_chunks/
+workspace.json
+.env
+.DS_Store

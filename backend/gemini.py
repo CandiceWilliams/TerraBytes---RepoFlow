@@ -1,4 +1,4 @@
-# gemini_client.py
+# gemini.py
 
 import os
 import json
