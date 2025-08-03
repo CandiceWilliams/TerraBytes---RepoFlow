@@ -1,16 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 
-const GithubIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 text-light me-2"
-    fill="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.6.111.819-.26.819-.578 0-.28-.01-1.018-.01-2.008-3.332.724-4.043-1.61-4.043-1.61-.542-1.355-1.321-1.714-1.321-1.714-1.085-.744.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.998.108-.77.42-1.304.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.467-2.383 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.298-1.23 3.298-1.23.652 1.652.241 2.873.118 3.176.77.838 1.233 1.911 1.233 3.221 0 4.609-2.807 5.624-5.474 5.922.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.216.695.825.578 4.761-1.588 8.199-6.085 8.199-11.387c0-6.627-5.373-12-12-12z" />
-  </svg>
-);
 
 export default function RepoLink({ onRepoSubmitted }) {
 
@@ -57,62 +47,114 @@ export default function RepoLink({ onRepoSubmitted }) {
         }
       };
 
-  return (
-    <>
-      <div className="bg-dark text-light min-vh-100 d-flex align-items-center justify-content-center p-4">
-        {/* Card-like container for the input form */}
-        <div
-          className="bg-dark p-5 rounded-4 shadow-lg"
-          style={{ maxWidth: "600px", width: "100%" }}
-        >
-          {/* Main title of the application */}
-          <div className="d-flex align-items-center justify-content-center mb-4">
-            <GithubIcon />
-            <h1 className="display-4 fw-bold text-light text-center">
-              RepoFlow
-            </h1>
-          </div>
+  // return (
+  //   <>
+  //     <div className="bg-dark text-light min-vh-200 d-flex align-items-center justify-content-center p-4">
+  //       {/* Card-like container for the input form */}
+  //       <div>
+  //         {/* Main title of the application */}
+  //         <div className="d-flex align-items-center justify-content-center mb-4">
+  //           <h1 className="display-4 fw-bold text-light text-center">
+  //             RepoFlow
+  //           </h1>
+  //         </div>
 
-          {/* Descriptive text for the user */}
-          <p className="text-center text-white mb-5 lead">
-            Enter a GitHub repository URL to get started. RepoFlow will analyze
-            the repository and provide a structured overview.
-          </p>
+  //         {/* Descriptive text for the user */}
+  //         <p className="text-center text-white mb-5 lead">
+  //           Enter a GitHub repository URL to get started. RepoFlow will analyze
+  //           the repository and provide a structured overview.
+  //         </p>
 
-          {/* Display messages to the user */}
-          {message && (
-            <div className={`alert ${isError ? 'alert-danger' : 'alert-info'}`} role="alert">
-              {message}
-            </div>
-          )}
+  //         {/* Display messages to the user */}
+  //         {message && (
+  //           <div className={`alert ${isError ? 'alert-danger' : 'alert-info'}`} role="alert">
+  //             {message}
+  //           </div>
+  //         )}
 
-          {/* The form for submitting the URL */}
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="repo-url" className="form-label visually-hidden">
-                GitHub Repository URL
-              </label>
-              <input
-                id="repo-url"
-                type="text"
-                placeholder="https://github.com/owner/repository"
-                value={repoUrl}
-                onChange={handleInputChange}
-                className="form-control form-control-lg bg-secondary text-white border-0"
-                required
-              />
-            </div>
+  //         {/* The form for submitting the URL */}
+  //         <form onSubmit={handleSubmit}>
+  //           <div className="mb-3">
+  //             <label htmlFor="repo-url" className="form-label visually-hidden">
+  //               GitHub Repository URL
+  //             </label>
+  //             <input
+  //               id="repo-url"
+  //               type="text"
+  //               placeholder="https://github.com/owner/repository"
+  //               value={repoUrl}
+  //               onChange={handleInputChange}
+  //               className="form-control form-control-lg bg-secondary text-white border-0"
+  //               required
+  //             />
+  //           </div>
 
-            {/* Submit button */}
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
-            >
-              Analyze Repo
-            </button>
-          </form>
-        </div>
-      </div>
-    </>
-  );
+  //           {/* Submit button */}
+  //           <button
+  //           style={styles.button}
+  //             type="submit"
+  //             className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
+  //           >
+  //             Analyze Repo
+  //           </button>
+  //         </form>
+  //       </div>
+  //     </div>
+  //   </>
+  // );
 }
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    backgroundColor: '#012A4A', // Dark blue background
+    color: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '1rem',
+    textAlign: 'center',
+    fontFamily: '"Poppins", sans-serif',
+  },
+  logo: {
+    width: 160, // Adjust size as per screenshot
+    height: 160, // Adjust size as per screenshot
+    marginBottom: 24,
+    objectFit: 'cover',
+  },
+  title: {
+    fontSize: 48, // Large font size for "RepoFlow"
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 18, // Increased font size for subtitle
+    fontWeight: 'normal', // Can be 'bold' or 'normal' based on preference
+    marginBottom: 24,
+    color: '#D0D6DB', // This color looks good for contrast
+  },
+  input: {
+    width: '100%',
+    maxWidth: 600,
+    padding: '14px 20px',
+    borderRadius: 30, // More rounded corners
+    backgroundColor: '#4A6173', // Darker input background
+    border: 'none',
+    color: 'white',
+    fontSize: 16,
+    marginBottom: 24,
+    outline: 'none',
+    textAlign: 'center', // Center placeholder text
+  },
+  button: {
+    padding: '14px 32px',
+    backgroundColor: '#89C2D9', // Light blue button color
+    color: '#012A4A', // Dark blue text on button
+    fontWeight: 'bold',
+    fontSize: 16,
+    border: 'none',
+    borderRadius: 12, // Rounded button
+    cursor: 'pointer',
+  },
+};

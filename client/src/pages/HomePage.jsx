@@ -1,20 +1,90 @@
-import { useState } from 'react'
-import RepoLink from './RepoLink.jsx';
-import WorkSpace from './WorkSpace.jsx';
+import React, { useState } from 'react';
+import RepoLink from "../RepoLink.jsx";
 
+function Homepage({ onAnalyze }) {
+  const [repoUrl, setRepoUrl] = useState('');
 
-function App() {
-  const [repoReceived, setRepoReceived] = useState(false);
+  const handleClick = () => {
+    if (repoUrl.trim()) {
+      onAnalyze(repoUrl); // Pass to parent (App.jsx)
+    }
+  };
 
   return (
-    <>
-      {!repoReceived ? (
-        <RepoLink /> 
-      ) : (
-        <WorkSpace />
-      )}
-    </>
+    <div style={styles.container}>
+      <img src="src/assets/logo-2.png" alt="RepoFlow logo" style={styles.logo} />
+
+      <h1 style={styles.title}>RepoFlow</h1>
+
+      <p style={styles.subtitle}>
+        Paste your GitHub Repository link and we’ll analyze it for you!
+      </p>
+
+      <input
+        type="text"
+        placeholder="Enter link"
+        value={repoUrl}
+        onChange={(e) => setRepoUrl(e.target.value)}
+        style={styles.input}
+      />
+
+      <button onClick={handleClick} style={styles.button}>
+        Analyze Repo
+      </button>
+    </div>
   );
 }
 
-export default App;
+const styles = {
+  container: {
+    minHeight: '100vh',
+    backgroundColor: '#012A4A',
+    color: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '1rem',
+    textAlign: 'center',
+    fontFamily: '"Poppins", sans-serif',
+  },
+  logo: {
+    width: 160,
+    height: 160,
+    marginBottom: 24,
+    objectFit: 'cover',
+  },
+  title: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    marginBottom: 24,
+  },
+  input: {
+    width: '100%',
+    maxWidth: 600,
+    padding: '14px 20px',
+    borderRadius: 30,
+    backgroundColor: '#4a6173',
+    border: 'none',
+    color: 'white',
+    fontSize: 16,
+    marginBottom: 24,
+    outline: 'none',
+  },
+  button: {
+    padding: '14px 32px',
+    backgroundColor: '#89C2D9',
+    color: '#012A4A',
+    fontWeight: 'bold',
+    fontSize: 16,
+    border: 'none',
+    borderRadius: 12,
+    cursor: 'pointer',
+  },
+};
+
+export default Homepage;
