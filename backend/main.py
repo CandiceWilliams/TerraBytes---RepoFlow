@@ -97,20 +97,29 @@ async def _load_rag_model():
     """
     global RAG_QUERY_ENGINE
     
-    index_store_path = os.path.join(VECTOR_DB_DIR, "index_store.json")
+    faiss_index_path = os.path.join(VECTOR_DB_DIR, "faiss_index.bin")
 
-    # Wait for the index store file to be created by smart_chunking
-    while not os.path.exists(index_store_path):
-        print("Waiting for FAISS index file to be created...")
-        time.sleep(2) # Poll every 2 seconds
+    # The wrapper function ensures this file exists, but we'll check its size
+    if not os.path.exists(faiss_index_path) or os.path.getsize(faiss_index_path) == 0:
+        print("ERROR: FAISS index file is missing or empty. RAG model cannot be loaded.")
+        return
 
     try:
         print("Loading RAG model into memory...")
         # Re-initialize the embedding model (if not globally available and configured)
         embed_model = GeminiEmbedding(api_key=API_KEY)
         
-        # Create a storage context and load from the persisted directory
-        storage_context = StorageContext.from_defaults(persist_dir=VECTOR_DB_DIR)
+        # Load the Faiss index binary file first.
+        faiss_index_from_file = faiss.read_index(faiss_index_path)
+
+        # Create a FaissVectorStore instance from the loaded index
+        vector_store = FaissVectorStore(faiss_index=faiss_index_from_file)
+
+        # Create a storage context from defaults, passing the vector store
+        storage_context = StorageContext.from_defaults(
+            vector_store=vector_store,
+            persist_dir=VECTOR_DB_DIR # This will load other files like docstore.json
+        )
         
         # Load the index from storage
         index = load_index_from_storage(storage_context=storage_context, embed_model=embed_model)
