@@ -16,25 +16,15 @@ from gemini import stageOne
 from smartChunking import smart_chunking
 
 # Import LlamaIndex components for RAG
-# Import LlamaIndex components for RAG
 from llama_index.core import VectorStoreIndex, StorageContext, load_index_from_storage, Settings
 from llama_index.vector_stores.faiss import FaissVectorStore
 import faiss
 from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.llms.gemini import Gemini
-# import google.generativeai as genai
-#import numpy as np # Import numpy for loading binary faiss file
 
 # Configure the Gemini API key for the RAG query engine
 API_KEY = "AIzaSyDAkKSlkPXRva8ywSZKOUt0zpxReHKTweo"
 
-""" try:
-    genai.configure(api_key=API_KEY)
-except KeyError:
-    print("FATAL ERROR: 'GOOGLE_API_KEY' environment variable not set.")
-    print("Please set it before running the script.")
-    pass
- """
 # Initialize the FastAPI application
 app = FastAPI(
     title="RepoFlow Backend",
@@ -42,7 +32,6 @@ app = FastAPI(
 )
 
 # Define the allowed origins for CORS.
-# For production, replace "*" with your specific frontend URL.
 origins = [
     "http://localhost",
     "http://localhost:3000",
@@ -60,7 +49,6 @@ app.add_middleware(
 )
 
 # Define a base directory for storing cloned repositories
-# We use an absolute path to avoid issues with the current working directory.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPOS_DIR = os.path.join(BASE_DIR, "cloned_repos")
 os.makedirs(REPOS_DIR, exist_ok=True)
@@ -72,7 +60,6 @@ def cleanup_repos():
     vector_db_dir = os.path.join(BASE_DIR, "vector_db_chunks")
     if os.path.exists(vector_db_dir):
         shutil.rmtree(vector_db_dir, ignore_errors=True)
-    # Clean up workspace and tree structure files
     workspace_file = os.path.join(BASE_DIR, "workspace.json")
     if os.path.exists(workspace_file):
         os.remove(workspace_file)
@@ -83,24 +70,16 @@ def cleanup_repos():
 # Register cleanup function to run on exit
 atexit.register(cleanup_repos)
 
-# Global variable to store the path of the most recently cloned repository
+# Global variables
 LATEST_REPO_PATH = None
-# Define the directory for the vector database
 VECTOR_DB_DIR = os.path.join(BASE_DIR, "vector_db_chunks")
-
-# Global variable to hold the RAG query engine instance.
-# This will be loaded once after the vector DB is ready.
 RAG_QUERY_ENGINE = None
 
-# ----------------------------------------------------
 # Pydantic models for request bodies
-# ----------------------------------------------------
 class RepoUrlRequest(BaseModel):
-    """Defines the expected structure of the incoming request body for cloning a repository."""
     repoUrl: str
 
 class WorkspaceRequest(BaseModel):
-    """Defines the expected structure of a single workspace object."""
     name: str
     description: str
     fileStructure: list[str]
@@ -108,33 +87,25 @@ class WorkspaceRequest(BaseModel):
     assumptions: str
 
 class QueryRequest(BaseModel):
-    """Defines the expected structure for a user query."""
     query: str
 
-# ----------------------------------------------------
-# New function to load the RAG model as a background task
-# ----------------------------------------------------
 async def _load_rag_model():
     """
     Background task to load the RAG model and store it in a global variable.
-    This prevents reloading the index for every chat request.
     """
     global RAG_QUERY_ENGINE
     
-    faiss_index_path = os.path.join(VECTOR_DB_DIR, "faiss_index.bin")
+    docstore_path = os.path.join(VECTOR_DB_DIR, "docstore.json")
 
-    # The wrapper function ensures this file exists, but we'll check its size
-    if not os.path.exists(faiss_index_path) or os.path.getsize(faiss_index_path) == 0:
-        print("ERROR: FAISS index file is missing or empty. RAG model cannot be loaded.")
+    # Check if required files exist
+    if not os.path.exists(docstore_path):
+        print(f"ERROR: docstore.json is missing at {docstore_path}")
         return
 
     try:
         print("Loading RAG model into memory...")
         
-        # Import Settings to configure default models
-        from llama_index.core import Settings
-        
-        # Re-initialize the embedding model and LLM
+        # Initialize the embedding model and LLM
         embed_model = GeminiEmbedding(api_key=API_KEY)
         llm = Gemini(api_key=API_KEY)
         
@@ -142,38 +113,45 @@ async def _load_rag_model():
         Settings.embed_model = embed_model
         Settings.llm = llm
         
-        # Load the Faiss index binary file first.
-        faiss_index_from_file = faiss.read_index(faiss_index_path)
+        # Check for FAISS index file with correct extension (.bin)
+        faiss_index_file = os.path.join(VECTOR_DB_DIR, "faiss_index.bin")  # Changed from .faiss to .bin
+        if os.path.exists(faiss_index_file):
+            print(f"Loading existing FAISS index from: {faiss_index_file}")
+            loaded_faiss_index = faiss.read_index(faiss_index_file)
+            vector_store = FaissVectorStore(faiss_index=loaded_faiss_index)
+        else:
+            print("FAISS index file not found, creating new one...")
+            faiss_index = faiss.IndexFlatL2(768)
+            vector_store = FaissVectorStore(faiss_index=faiss_index)
 
-        # Create a FaissVectorStore instance from the loaded index
-        vector_store = FaissVectorStore(faiss_index=faiss_index_from_file)
-
-        # Create a storage context from defaults, passing the vector store
+        # Create a storage context
         storage_context = StorageContext.from_defaults(
             vector_store=vector_store,
-            persist_dir=VECTOR_DB_DIR # This will load other files like docstore.json
+            persist_dir=VECTOR_DB_DIR
         )
         
         # Load the index from storage
-        index = load_index_from_storage(
-            storage_context=storage_context
-        )
+        print("Loading index from storage...")
+        index = load_index_from_storage(storage_context=storage_context)
         
-        # Create a query engine and store it globally, explicitly passing the LLM
+        # Create a query engine with better error handling
+        print("Creating query engine...")
         RAG_QUERY_ENGINE = index.as_query_engine(
             similarity_top_k=3,
-            llm=llm
+            llm=llm,
+            response_mode="compact"  # Add response mode for better handling
         )
         print("RAG query engine is ready!")
 
     except Exception as e:
         print(f"FATAL ERROR: Could not load RAG model. Details: {e}")
-        # In a real-world app, you might want to log this or notify an admin.
+        import traceback
+        traceback.print_exc()
         RAG_QUERY_ENGINE = None
 
-# ----------------------------------------------------
+
+
 # Wrapper function to process and load RAG model sequentially
-# ----------------------------------------------------
 async def _process_and_load_rag(repo_dir: str, file_paths_to_chunk: list[str], vector_db_dir: str):
     """
     Sequentially runs smart_chunking and then loads the RAG model.
@@ -189,30 +167,27 @@ async def _process_and_load_rag(repo_dir: str, file_paths_to_chunk: list[str], v
         print("DEBUG: Calling smart_chunking function...")
         smart_chunking(repo_dir, file_paths_to_chunk, vector_db_dir)
         
-        print("DEBUG: Smart chunking process completed. Checking for FAISS index file...")
-        faiss_index_path = os.path.join(vector_db_dir, "faiss_index.bin")
-        if os.path.exists(faiss_index_path):
-            print(f"DEBUG: FAISS index file found at {faiss_index_path}. Proceeding to load model.")
+        print("DEBUG: Smart chunking process completed. Checking for required files...")
+        docstore_path = os.path.join(vector_db_dir, "docstore.json")
+        if os.path.exists(docstore_path):
+            print(f"DEBUG: Essential files found. Proceeding to load model.")
+            # Then, load the RAG model into memory
+            print("DEBUG: Loading RAG model...")
+            await _load_rag_model()
+            print("DEBUG: RAG processing pipeline completed successfully!")
         else:
-            print(f"ERROR: FAISS index file not found at {faiss_index_path} after smart chunking. The smart chunking function may have failed.")
+            print(f"ERROR: Essential files not found after smart chunking. The smart chunking function may have failed.")
             return
-        
-        # Then, load the RAG model into memory
-        print("DEBUG: Loading RAG model...")
-        await _load_rag_model()
-        print("DEBUG: RAG processing pipeline completed successfully!")
         
     except Exception as e:
         print(f"FATAL ERROR in _process_and_load_rag: {e}")
         import traceback
         traceback.print_exc()
 
-
 @app.post("/api/receive-repo")
 async def receive_repo(request_body: RepoUrlRequest, background_tasks: BackgroundTasks):
     """
     Receives a GitHub repository URL, clones it, and processes its contents.
-    The LLM analysis is run as a background task after a success message is sent.
     """
     global LATEST_REPO_PATH, RAG_QUERY_ENGINE
     repo_url = request_body.repoUrl.strip()
@@ -252,7 +227,6 @@ async def receive_repo(request_body: RepoUrlRequest, background_tasks: Backgroun
     result = process_repository(repo_url)
     
     # Store the correct repo path in the global variable for later use
-    # Ensure the path is always absolute to prevent future issues
     LATEST_REPO_PATH = os.path.abspath(result['repo_path'])
 
     # After the file is created, add the LLM call as a background task.
@@ -268,9 +242,6 @@ async def receive_repo(request_body: RepoUrlRequest, background_tasks: Backgroun
         "err": False
     }
 
-# ----------------------------------------------------
-# New API endpoint to get the list of workspaces
-# ----------------------------------------------------
 @app.post("/api/get-workspaces")
 async def get_workspaces():
     """
@@ -299,12 +270,6 @@ async def get_workspaces():
             detail={"message": f"An unexpected error occurred while reading the workspace file: {e}", "err": True}
         )
 
-# ----------------------------------------------------
-# New API endpoint to receive a selected workspace
-# ----------------------------------------------------
-# Add this debugging code to your /api/select-workspace endpoint in main.py
-# Replace the existing select_workspace function with this version:
-
 @app.post("/api/select-workspace")
 async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: BackgroundTasks):
     """
@@ -319,10 +284,7 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
             detail={"message": "No cloned repository path found. Please clone a repo first.", "err": True}
         )
     
-    # Use the stored absolute path directly
     repo_dir = LATEST_REPO_PATH
-
-    # Get the file paths from the received workspace data
     file_paths_to_chunk = workspace_data.fileStructure
     
     print(f"Selected repo directory for chunking: {repo_dir}")
@@ -337,19 +299,6 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
             detail={"message": f"Repository directory not found: {repo_dir}", "err": True}
         )
     
-    # List actual files in the repository
-    print("\nActual files in repository:")
-    for root, dirs, files in os.walk(repo_dir):
-        # Skip .git directory
-        if '.git' in root:
-            continue
-        rel_root = os.path.relpath(root, repo_dir)
-        if rel_root == '.':
-            rel_root = ''
-        for file in files[:10]:  # Show first 10 files in each directory
-            file_path = os.path.join(rel_root, file) if rel_root else file
-            print(f"  - {file_path}")
-    
     # Validate that files exist
     valid_files = []
     invalid_files = []
@@ -361,9 +310,6 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
             invalid_files.append(file_path)
             print(f"WARNING: File not found: {full_path}")
     
-    if invalid_files:
-        print(f"\nInvalid files detected: {invalid_files}")
-    
     if not valid_files:
         raise HTTPException(
             status_code=400,
@@ -374,9 +320,9 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
             }
         )
     
-    print(f"\nValid files to process: {valid_files}")
+    print(f"Valid files to process: {valid_files}")
     
-    # Start the new wrapper function as a background task with only valid files
+    # Start the processing as a background task with only valid files
     background_tasks.add_task(_process_and_load_rag, repo_dir, valid_files, VECTOR_DB_DIR)
 
     return {
@@ -386,9 +332,7 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
         "invalid_files": invalid_files,
         "err": False
     }
-# ----------------------------------------------------
-# New API endpoint to check if the workspace file is ready
-# ----------------------------------------------------
+
 @app.get("/api/check-workspaces")
 def check_workspaces():
     """
@@ -397,7 +341,6 @@ def check_workspaces():
     workspace_file_path = os.path.join(BASE_DIR, "workspace.json")
     is_ready = os.path.exists(workspace_file_path)
 
-    # We also check if the file is non-empty to ensure it's not a partial write
     if is_ready:
         is_ready = os.path.getsize(workspace_file_path) > 0
     
@@ -406,11 +349,48 @@ def check_workspaces():
 @app.get("/api/check-rag-ready")
 def check_rag_ready():
     """
-    Checks if the FAISS vector database directory exists and is ready for use.
+    Checks if the vector database files exist and the RAG query engine is ready.
     """
-    # The RAG query engine is ready if it's not None
-    is_ready = RAG_QUERY_ENGINE is not None
-    return {"isReady": is_ready}
+    # Check if the required files exist
+    docstore_path = os.path.join(VECTOR_DB_DIR, "docstore.json")
+    faiss_index_file = os.path.join(VECTOR_DB_DIR, "faiss_index.faiss")
+    
+    # At minimum we need docstore.json to exist
+    essential_files_exist = os.path.exists(docstore_path)
+    
+    # The RAG query engine is ready if it's not None AND essential files exist
+    is_ready = RAG_QUERY_ENGINE is not None and essential_files_exist
+    
+    return {
+        "isReady": is_ready,
+        "essentialFilesExist": essential_files_exist,
+        "queryEngineLoaded": RAG_QUERY_ENGINE is not None,
+        "docstoreExists": os.path.exists(docstore_path),
+        "faissIndexExists": os.path.exists(faiss_index_file)
+    }
+
+@app.get("/api/check-rag-ready")
+def check_rag_ready():
+    """
+    Checks if the vector database files exist and the RAG query engine is ready.
+    """
+    # Check if the required files exist
+    docstore_path = os.path.join(VECTOR_DB_DIR, "docstore.json")
+    faiss_index_file = os.path.join(VECTOR_DB_DIR, "faiss_index.bin")  # Changed from .faiss to .bin
+    
+    # At minimum we need docstore.json to exist
+    essential_files_exist = os.path.exists(docstore_path)
+    
+    # The RAG query engine is ready if it's not None AND essential files exist
+    is_ready = RAG_QUERY_ENGINE is not None and essential_files_exist
+    
+    return {
+        "isReady": is_ready,
+        "essentialFilesExist": essential_files_exist,
+        "queryEngineLoaded": RAG_QUERY_ENGINE is not None,
+        "docstoreExists": os.path.exists(docstore_path),
+        "faissIndexExists": os.path.exists(faiss_index_file)
+    }
 
 
 @app.post("/api/chat")
@@ -436,8 +416,12 @@ async def chat_with_rag(request_body: QueryRequest):
         )
 
     try:
+        print(f"Processing query: {user_query}")
+        
         # Query the RAG model using the pre-loaded engine
         response = RAG_QUERY_ENGINE.query(user_query)
+        
+        print(f"RAG response generated successfully: {str(response)[:100]}...")  # Log first 100 chars
         
         return {
             "message": "Query processed successfully",
@@ -446,14 +430,58 @@ async def chat_with_rag(request_body: QueryRequest):
         }
 
     except Exception as e:
-        print(f"Error during RAG chat: {e}")
+        print(f"Error during RAG chat: {str(e)}")
+        import traceback
+        traceback.print_exc()  # This will show the full error stack
+        
         raise HTTPException(
             status_code=500,
-            detail={"message": f"An error occurred during chat processing: {e}", "err": True}
+            detail={"message": f"An error occurred during chat processing: {str(e)}", "err": True}
         )
 
 
-# A simple example route to test that the API is working
+
+@app.get("/api/debug-rag")
+def debug_rag():
+    """
+    Debug endpoint to check RAG system status in detail.
+    """
+    global RAG_QUERY_ENGINE
+    
+    debug_info = {
+        "query_engine_status": "loaded" if RAG_QUERY_ENGINE is not None else "not_loaded",
+        "vector_db_dir": VECTOR_DB_DIR,
+        "vector_db_exists": os.path.exists(VECTOR_DB_DIR),
+        "files_in_vector_db": [],
+        "api_key_set": bool(API_KEY),
+        "latest_repo_path": LATEST_REPO_PATH
+    }
+    
+    # List files in vector DB directory
+    if os.path.exists(VECTOR_DB_DIR):
+        debug_info["files_in_vector_db"] = os.listdir(VECTOR_DB_DIR)
+    
+    # Check specific files
+    required_files = ["docstore.json", "index_store.json", "faiss_index.bin"]
+    for file in required_files:
+        file_path = os.path.join(VECTOR_DB_DIR, file)
+        debug_info[f"{file}_exists"] = os.path.exists(file_path)
+        if os.path.exists(file_path):
+            debug_info[f"{file}_size"] = os.path.getsize(file_path)
+    
+    # Test a simple query if engine is loaded
+    if RAG_QUERY_ENGINE is not None:
+        try:
+            test_response = RAG_QUERY_ENGINE.query("Hello")
+            debug_info["test_query_success"] = True
+            debug_info["test_response"] = str(test_response)[:200]
+        except Exception as e:
+            debug_info["test_query_success"] = False
+            debug_info["test_query_error"] = str(e)
+    
+    return debug_info
+
+
 @app.get("/")
 def read_root():
     """A simple root endpoint to show the API is running."""
