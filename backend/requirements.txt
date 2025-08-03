@@ -7,3 +7,4 @@ faiss-cpu
 google-generativeai
 google-auth
 pydantic
+llama-index-llms-gemini
