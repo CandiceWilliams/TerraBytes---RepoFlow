@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import "@fontsource/poppins";
 
 
 export default function RepoLink({ onRepoSubmitted }) {
