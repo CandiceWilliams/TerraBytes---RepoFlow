@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RepoLink from './RepoLink.jsx';
 import WorkSpace from './WorkSpace.jsx';
-
+import ChatPage from './ChatPage.jsx';
 
 const API_BASE_URL = 'http://127.0.0.1:8000'; // Replace with your FastAPI backend URL
 
-
-function App() {
+// This component handles the initial flow of repo submission and workspace selection.
+const MainFlow = () => {
   const [repoReceived, setRepoReceived] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -40,7 +41,7 @@ function App() {
   return (
     <>
       {!repoReceived && !isProcessing ? (
-        <RepoLink onRepoSubmitted={() => setIsProcessing(true)} /> 
+        <RepoLink onRepoSubmitted={() => setIsProcessing(true)} />
       ) : isProcessing ? (
         <div className="d-flex align-items-center justify-content-center vh-100 bg-dark text-light">
           <div className="text-center">
@@ -54,6 +55,18 @@ function App() {
         <WorkSpace />
       )}
     </>
+  );
+};
+
+// The main App component now handles routing
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainFlow />} />
+        <Route path="/chat" element={<ChatPage />} />
+      </Routes>
+    </Router>
   );
 }
 

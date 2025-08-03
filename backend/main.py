@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,6 +11,23 @@ from pydantic import BaseModel
 from repoProcessor import process_repository
 from gemini import stageOne
 from smartChunking import smart_chunking
+
+# Import LlamaIndex components for RAG
+from llama_index.core import VectorStoreIndex, StorageContext, load_index_from_storage
+from llama_index.vector_stores.faiss import FaissVectorStore
+import faiss
+from llama_index.embeddings.gemini import GeminiEmbedding
+import google.generativeai as genai
+import numpy as np # Import numpy for loading binary faiss file
+
+# Configure the Gemini API key for the RAG query engine
+API_KEY = "AIzaSyDAkKSlkPXRva8ywSZKOUt0zpxReHKTweo"
+try:
+    genai.configure(api_key=API_KEY)
+except KeyError:
+    print("FATAL ERROR: 'GOOGLE_API_KEY' environment variable not set.")
+    print("Please set it before running the script.")
+    pass
 
 # Initialize the FastAPI application
 app = FastAPI(
@@ -43,7 +61,12 @@ os.makedirs(REPOS_DIR, exist_ok=True)
 
 # Global variable to store the path of the most recently cloned repository
 LATEST_REPO_PATH = None
+# Define the directory for the vector database
+VECTOR_DB_DIR = os.path.join(BASE_DIR, "vector_db_chunks")
 
+# Global variable to hold the RAG query engine instance.
+# This will be loaded once after the vector DB is ready.
+RAG_QUERY_ENGINE = None
 
 # ----------------------------------------------------
 # Pydantic models for request bodies
@@ -63,6 +86,78 @@ class WorkspaceRequest(BaseModel):
 class QueryRequest(BaseModel):
     """Defines the expected structure for a user query."""
     query: str
+
+# ----------------------------------------------------
+# New function to load the RAG model as a background task
+# ----------------------------------------------------
+async def _load_rag_model():
+    """
+    Background task to load the RAG model and store it in a global variable.
+    This prevents reloading the index for every chat request.
+    """
+    global RAG_QUERY_ENGINE
+    
+    faiss_index_path = os.path.join(VECTOR_DB_DIR, "faiss_index.bin")
+
+    # Wait for the faiss index file to be created by smart_chunking
+    while not os.path.exists(faiss_index_path) or os.path.getsize(faiss_index_path) == 0:
+        print("Waiting for FAISS index file to be created...")
+        time.sleep(2) # Poll every 2 seconds
+
+    try:
+        print("Loading RAG model into memory...")
+        # Re-initialize the embedding model (if not globally available and configured)
+        embed_model = GeminiEmbedding(api_key=API_KEY)
+        
+        # Load the Faiss index binary file first.
+        faiss_index_from_file = faiss.read_index(faiss_index_path)
+
+        # Create a FaissVectorStore instance from the loaded index
+        vector_store = FaissVectorStore(faiss_index=faiss_index_from_file)
+
+        # Create a storage context from defaults, passing the vector store
+        storage_context = StorageContext.from_defaults(
+            vector_store=vector_store,
+            persist_dir=VECTOR_DB_DIR # This will load other files like docstore.json
+        )
+        
+        # Load the index from storage
+        index = load_index_from_storage(storage_context=storage_context, embed_model=embed_model)
+        
+        # Create a query engine and store it globally
+        RAG_QUERY_ENGINE = index.as_query_engine(similarity_top_k=3)
+        print("RAG query engine is ready!")
+
+    except Exception as e:
+        print(f"FATAL ERROR: Could not load RAG model. Details: {e}")
+        # In a real-world app, you might want to log this or notify an admin.
+        RAG_QUERY_ENGINE = None
+
+# ----------------------------------------------------
+# Wrapper function to process and load RAG model sequentially
+# ----------------------------------------------------
+async def _process_and_load_rag(repo_dir: str, file_paths_to_chunk: list[str], vector_db_dir: str):
+    """
+    Sequentially runs smart_chunking and then loads the RAG model.
+    """
+    print(f"DEBUG: Starting smart chunking process for directory: {repo_dir}")
+    print(f"DEBUG: Vector DB directory is: {vector_db_dir}")
+
+    # Ensure the vector DB directory exists
+    os.makedirs(vector_db_dir, exist_ok=True)
+    
+    # First, run the smart chunking process
+    smart_chunking(repo_dir, file_paths_to_chunk, vector_db_dir)
+    
+    print("DEBUG: Smart chunking process completed. Checking for FAISS index file...")
+    faiss_index_path = os.path.join(vector_db_dir, "faiss_index.bin")
+    if os.path.exists(faiss_index_path):
+        print(f"DEBUG: FAISS index file found at {faiss_index_path}. Proceeding to load model.")
+    else:
+        print(f"ERROR: FAISS index file not found at {faiss_index_path} after smart chunking. The smart chunking function may have failed.")
+    
+    # Then, load the RAG model into memory
+    await _load_rag_model()
 
 
 @app.post("/api/receive-repo")
@@ -164,12 +259,9 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
         
     print(f"Files to chunk: {file_paths_to_chunk}")
 
-    # Start the smart chunking process as a background task
-    # Define the absolute path for the vector database file
-    db_file_path = os.path.join(BASE_DIR, "chunks.vector")
-    
-    # Pass the new db_file_path argument to the smart_chunking function
-    background_tasks.add_task(smart_chunking, repo_dir, file_paths_to_chunk, db_file_path)
+    # Start the new wrapper function as a background task
+    # This will run smart_chunking and then load the RAG model sequentially
+    background_tasks.add_task(_process_and_load_rag, repo_dir, file_paths_to_chunk, VECTOR_DB_DIR)
 
     return {
         "message": "Workspace received successfully. Smart chunking process has been initiated in the background!",
@@ -193,6 +285,56 @@ def check_workspaces():
         is_ready = os.path.getsize(workspace_file_path) > 0
     
     return {"isReady": is_ready}
+
+@app.get("/api/check-rag-ready")
+def check_rag_ready():
+    """
+    Checks if the FAISS vector database directory exists and is ready for use.
+    """
+    # The RAG query engine is ready if it's not None
+    is_ready = RAG_QUERY_ENGINE is not None
+    return {"isReady": is_ready}
+
+
+@app.post("/api/chat")
+async def chat_with_rag(request_body: QueryRequest):
+    """
+    Receives a user query and uses the RAG model to generate a response.
+    """
+    global RAG_QUERY_ENGINE
+
+    user_query = request_body.query.strip()
+
+    if not user_query:
+        raise HTTPException(
+            status_code=400,
+            detail={"message": "Missing 'query' in request body", "err": True}
+        )
+
+    # Check if the RAG query engine is ready and loaded in memory
+    if RAG_QUERY_ENGINE is None:
+        raise HTTPException(
+            status_code=400,
+            detail={"message": "RAG model not ready. Please select a workspace and wait for processing.", "err": True}
+        )
+
+    try:
+        # Query the RAG model using the pre-loaded engine
+        response = RAG_QUERY_ENGINE.query(user_query)
+        
+        return {
+            "message": "Query processed successfully",
+            "response": str(response),
+            "err": False
+        }
+
+    except Exception as e:
+        print(f"Error during RAG chat: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail={"message": f"An error occurred during chat processing: {e}", "err": True}
+        )
+
 
 # A simple example route to test that the API is working
 @app.get("/")

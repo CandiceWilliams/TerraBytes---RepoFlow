@@ -4,7 +4,7 @@ import os
 import json
 import google.generativeai as genai
 import time
-from llama_index.core import Document, VectorStoreIndex, StorageContext
+from llama_index.core import Document, VectorStoreIndex, StorageContext, load_index_from_storage
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.vector_stores.faiss import FaissVectorStore
 import faiss
@@ -20,7 +20,7 @@ except KeyError:
     print("Please set it before running the script.")
     pass
 
-# Define the LLM for chunking
+# Initialize the Gemini model globally
 CHUNK_MODEL = genai.GenerativeModel('gemini-2.5-flash-lite')
 
 # Define the prompt for the LLM to perform smart chunking
@@ -46,7 +46,7 @@ Avoid redundancy across chunks.
 Assume this data will be stored in a vector DB and used later for retrieval-based reasoning by another LLM, which will ask questions to understand or extend the code.
 """
 
-def smart_chunking(repo_path: str, file_paths: list[str], db_file_path: str):
+def smart_chunking(repo_path: str, file_paths: list[str], vector_db_dir: str):
     """
     Chunks code files using an LLM and stores them in a FAISS vector database.
     Includes a fallback for files that cannot be processed by the LLM.
@@ -54,10 +54,14 @@ def smart_chunking(repo_path: str, file_paths: list[str], db_file_path: str):
     Args:
         repo_path: The absolute path to the cloned repository.
         file_paths: A list of file paths (relative to the repo root) to chunk.
-        db_file_path: The absolute path where the vector database file will be saved.
+        vector_db_dir: The absolute path to the directory where the vector database will be saved.
     """
     print("Starting smart code chunking process...")
     all_documents = []
+
+    # Ensure the directory for the vector database exists
+    os.makedirs(vector_db_dir, exist_ok=True)
+    print(f"Vector database will be saved to: {vector_db_dir}")
     
     # Initialize FAISS and the vector store
     # The default Gemini embedding model has a dimension of 768.
@@ -163,7 +167,8 @@ def smart_chunking(repo_path: str, file_paths: list[str], db_file_path: str):
             storage_context=storage_context,
             embed_model=embed_model
         )
-        index.storage_context.persist(persist_dir=db_file_path)
-        print(f"Vector database created and saved to {db_file_path}")
+        # Persist to the provided directory path
+        index.storage_context.persist(persist_dir=vector_db_dir)
+        print(f"Vector database created and saved to {vector_db_dir}")
     else:
         print("No documents were processed. Vector database not created.")
