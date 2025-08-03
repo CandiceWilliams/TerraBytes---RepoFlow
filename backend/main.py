@@ -3,6 +3,8 @@
 import os
 import json
 import time
+import shutil
+from llama_index.llms.gemini import Gemini
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -106,8 +108,9 @@ async def _load_rag_model():
 
     try:
         print("Loading RAG model into memory...")
-        # Re-initialize the embedding model (if not globally available and configured)
+        # Re-initialize the embedding model and LLM
         embed_model = GeminiEmbedding(api_key=API_KEY)
+        llm = Gemini(api_key=API_KEY)
         
         # Load the Faiss index binary file first.
         faiss_index_from_file = faiss.read_index(faiss_index_path)
@@ -121,8 +124,12 @@ async def _load_rag_model():
             persist_dir=VECTOR_DB_DIR # This will load other files like docstore.json
         )
         
-        # Load the index from storage
-        index = load_index_from_storage(storage_context=storage_context, embed_model=embed_model)
+        # Load the index from storage with both embed_model and llm
+        index = load_index_from_storage(
+            storage_context=storage_context, 
+            embed_model=embed_model,
+            llm=llm  # Specify Gemini as the LLM
+        )
         
         # Create a query engine and store it globally
         RAG_QUERY_ENGINE = index.as_query_engine(similarity_top_k=3)
@@ -140,24 +147,34 @@ async def _process_and_load_rag(repo_dir: str, file_paths_to_chunk: list[str], v
     """
     Sequentially runs smart_chunking and then loads the RAG model.
     """
-    print(f"DEBUG: Starting smart chunking process for directory: {repo_dir}")
-    print(f"DEBUG: Vector DB directory is: {vector_db_dir}")
+    try:
+        print(f"DEBUG: Starting smart chunking process for directory: {repo_dir}")
+        print(f"DEBUG: Vector DB directory is: {vector_db_dir}")
 
-    # Ensure the vector DB directory exists
-    os.makedirs(vector_db_dir, exist_ok=True)
-    
-    # First, run the smart chunking process
-    smart_chunking(repo_dir, file_paths_to_chunk, vector_db_dir)
-    
-    print("DEBUG: Smart chunking process completed. Checking for FAISS index file...")
-    faiss_index_path = os.path.join(vector_db_dir, "faiss_index.bin")
-    if os.path.exists(faiss_index_path):
-        print(f"DEBUG: FAISS index file found at {faiss_index_path}. Proceeding to load model.")
-    else:
-        print(f"ERROR: FAISS index file not found at {faiss_index_path} after smart chunking. The smart chunking function may have failed.")
-    
-    # Then, load the RAG model into memory
-    await _load_rag_model()
+        # Ensure the vector DB directory exists
+        os.makedirs(vector_db_dir, exist_ok=True)
+        
+        # First, run the smart chunking process
+        print("DEBUG: Calling smart_chunking function...")
+        smart_chunking(repo_dir, file_paths_to_chunk, vector_db_dir)
+        
+        print("DEBUG: Smart chunking process completed. Checking for FAISS index file...")
+        faiss_index_path = os.path.join(vector_db_dir, "faiss_index.bin")
+        if os.path.exists(faiss_index_path):
+            print(f"DEBUG: FAISS index file found at {faiss_index_path}. Proceeding to load model.")
+        else:
+            print(f"ERROR: FAISS index file not found at {faiss_index_path} after smart chunking. The smart chunking function may have failed.")
+            return
+        
+        # Then, load the RAG model into memory
+        print("DEBUG: Loading RAG model...")
+        await _load_rag_model()
+        print("DEBUG: RAG processing pipeline completed successfully!")
+        
+    except Exception as e:
+        print(f"FATAL ERROR in _process_and_load_rag: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @app.post("/api/receive-repo")
@@ -166,7 +183,7 @@ async def receive_repo(request_body: RepoUrlRequest, background_tasks: Backgroun
     Receives a GitHub repository URL, clones it, and processes its contents.
     The LLM analysis is run as a background task after a success message is sent.
     """
-    global LATEST_REPO_PATH
+    global LATEST_REPO_PATH, RAG_QUERY_ENGINE
     repo_url = request_body.repoUrl.strip()
 
     if not repo_url:
@@ -174,6 +191,31 @@ async def receive_repo(request_body: RepoUrlRequest, background_tasks: Backgroun
             status_code=400,
             detail={"message": "Missing 'repoUrl' in request body", "err": True}
         )
+    
+    # Clean up old data before processing new repository
+    print("Cleaning up old data...")
+    
+    # Clear the RAG query engine from memory
+    RAG_QUERY_ENGINE = None
+    
+    # Remove old vector database
+    if os.path.exists(VECTOR_DB_DIR):
+        shutil.rmtree(VECTOR_DB_DIR)
+        print(f"Cleared old vector database: {VECTOR_DB_DIR}")
+    
+    # Remove old workspace file
+    workspace_file_path = os.path.join(BASE_DIR, "workspace.json")
+    if os.path.exists(workspace_file_path):
+        os.remove(workspace_file_path)
+        print(f"Removed old workspace file: {workspace_file_path}")
+    
+    # Remove old tree structure file
+    tree_file_path = os.path.join(BASE_DIR, "tree_structure.txt")
+    if os.path.exists(tree_file_path):
+        os.remove(tree_file_path)
+        print(f"Removed old tree structure file: {tree_file_path}")
+    
+    print("Cleanup complete. Processing new repository...")
     
     # Call the function from the separate file to handle all the processing
     result = process_repository(repo_url)
@@ -194,7 +236,6 @@ async def receive_repo(request_body: RepoUrlRequest, background_tasks: Backgroun
         "tree_file": result['tree_file'],
         "err": False
     }
-
 
 # ----------------------------------------------------
 # New API endpoint to get the list of workspaces
@@ -230,6 +271,9 @@ async def get_workspaces():
 # ----------------------------------------------------
 # New API endpoint to receive a selected workspace
 # ----------------------------------------------------
+# Add this debugging code to your /api/select-workspace endpoint in main.py
+# Replace the existing select_workspace function with this version:
+
 @app.post("/api/select-workspace")
 async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: BackgroundTasks):
     """
@@ -251,24 +295,66 @@ async def select_workspace(workspace_data: WorkspaceRequest, background_tasks: B
     file_paths_to_chunk = workspace_data.fileStructure
     
     print(f"Selected repo directory for chunking: {repo_dir}")
+    print(f"Workspace name: {workspace_data.name}")
+    print(f"Files to chunk: {file_paths_to_chunk}")
     
-    # Add a print statement to show the exact full path being checked
+    # Check if the repository directory exists
+    if not os.path.exists(repo_dir):
+        print(f"ERROR: Repository directory does not exist: {repo_dir}")
+        raise HTTPException(
+            status_code=400,
+            detail={"message": f"Repository directory not found: {repo_dir}", "err": True}
+        )
+    
+    # List actual files in the repository
+    print("\nActual files in repository:")
+    for root, dirs, files in os.walk(repo_dir):
+        # Skip .git directory
+        if '.git' in root:
+            continue
+        rel_root = os.path.relpath(root, repo_dir)
+        if rel_root == '.':
+            rel_root = ''
+        for file in files[:10]:  # Show first 10 files in each directory
+            file_path = os.path.join(rel_root, file) if rel_root else file
+            print(f"  - {file_path}")
+    
+    # Validate that files exist
+    valid_files = []
+    invalid_files = []
     for file_path in file_paths_to_chunk:
         full_path = os.path.join(repo_dir, file_path)
-        print(f"DEBUG: Checking path: {full_path}")
-        
-    print(f"Files to chunk: {file_paths_to_chunk}")
-
-    # Start the new wrapper function as a background task
-    # This will run smart_chunking and then load the RAG model sequentially
-    background_tasks.add_task(_process_and_load_rag, repo_dir, file_paths_to_chunk, VECTOR_DB_DIR)
+        if os.path.exists(full_path) and os.path.isfile(full_path):
+            valid_files.append(file_path)
+        else:
+            invalid_files.append(file_path)
+            print(f"WARNING: File not found: {full_path}")
+    
+    if invalid_files:
+        print(f"\nInvalid files detected: {invalid_files}")
+    
+    if not valid_files:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "message": "No valid files found in the workspace. All specified files are missing.",
+                "invalid_files": invalid_files,
+                "err": True
+            }
+        )
+    
+    print(f"\nValid files to process: {valid_files}")
+    
+    # Start the new wrapper function as a background task with only valid files
+    background_tasks.add_task(_process_and_load_rag, repo_dir, valid_files, VECTOR_DB_DIR)
 
     return {
         "message": "Workspace received successfully. Smart chunking process has been initiated in the background!",
         "workspace_data": workspace_data,
+        "valid_files": valid_files,
+        "invalid_files": invalid_files,
         "err": False
     }
-
 # ----------------------------------------------------
 # New API endpoint to check if the workspace file is ready
 # ----------------------------------------------------

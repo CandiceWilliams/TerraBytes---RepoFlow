@@ -33,10 +33,12 @@ A name: A short title to be used as a button label.
 A description: A 1–2 sentence summary for users to understand what this part does.
 
 The list of files associated with this workspace. **This list MUST ONLY contain file paths and NOT directory paths.**
+**IMPORTANT: File paths should be relative to the repository root, NOT including the repository folder name itself.**
+**For example: If the repository is "my-repo-abc123" and contains "src/main.py", the path should be "src/main.py" NOT "my-repo-abc123/src/main.py"**
 
 A returnPrompt: A single-sentence identifier that can be used to pass back what workspace the user clicked.
 
-Any assumptions you made about this workspace’s purpose or boundaries.
+Any assumptions you made about this workspace's purpose or boundaries.
 
 🛑 Limit the number of workspaces to a minimum of 2 and a maximum of 30. Try to manage workspaces smartly, having more workspaces but where each one is more focused to the core of the workspace is important. Keeping fewer files in the workspace makes the later process more efficient, so it's recommended to have specific workspaces but not so specific that they become useless. Try to hit that under 12 file mark for each workspace if you can't, you can go slightly up.
 📦 Output must be a strict JSON array with no extra explanation outside the JSON.

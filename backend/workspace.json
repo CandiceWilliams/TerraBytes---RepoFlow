@@ -1,0 +1,549 @@
+[
+  {
+    "name": "Project Overview & Setup",
+    "description": "General repository files, including main README, license, build configurations, and overall test script.",
+    "fileStructure": [
+      ".gitignore",
+      "all_test.sh",
+      "LICENSE",
+      "Makefile",
+      "README.md",
+      "requirements.txt"
+    ],
+    "returnPrompt": "Explore the Project Overview & Setup workspace.",
+    "assumptions": "These files pertain to the repository as a whole, rather than any specific chapter or exercise."
+  },
+  {
+    "name": "Chapter 01: Hello World",
+    "description": "Python examples for basic program structure, comments, shebang, command-line arguments using argparse, and main functions.",
+    "fileStructure": [
+      "01_hello/hello01_print.py",
+      "01_hello/hello02_comment.py",
+      "01_hello/hello03_shebang.py",
+      "01_hello/hello04_argparse_positional.py",
+      "01_hello/hello05_argparse_option.py",
+      "01_hello/hello06_main_function.py",
+      "01_hello/hello07_get_args.py",
+      "01_hello/hello08_formatted.py",
+      "01_hello/Makefile",
+      "01_hello/README.md",
+      "01_hello/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 01: Hello World workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 02: Crow's Nest",
+    "description": "Program to format output strings based on a single positional argument, as described in Chapter 2.",
+    "fileStructure": [
+      "02_crowsnest/all_test.sh",
+      "02_crowsnest/Makefile",
+      "02_crowsnest/README.md",
+      "02_crowsnest/solution.py",
+      "02_crowsnest/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 02: Crow's Nest workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 03: Picnic",
+    "description": "Program to format a list of items based on multiple string arguments, as part of Chapter 3's exercises.",
+    "fileStructure": [
+      "03_picnic/all_test.sh",
+      "03_picnic/Makefile",
+      "03_picnic/README.md",
+      "03_picnic/solution.py",
+      "03_picnic/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 03: Picnic workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 04: Jump The Five",
+    "description": "Python program to encode numerals using the 'Jump The Five' algorithm, demonstrating dictionary usage and basic encryption concepts.",
+    "fileStructure": [
+      "04_jump_the_five/all_test.sh",
+      "04_jump_the_five/Makefile",
+      "04_jump_the_five/README.md",
+      "04_jump_the_five/solution1.py",
+      "04_jump_the_five/solution2.py",
+      "04_jump_the_five/solution3.py",
+      "04_jump_the_five/solution4.py",
+      "04_jump_the_five/solution5.py",
+      "04_jump_the_five/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 04: Jump The Five workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 05: Howler",
+    "description": "Program for text processing from command line or file, with output to STDOUT or file, demonstrating file I/O operations.",
+    "fileStructure": [
+      "05_howler/.gitignore",
+      "05_howler/all_test.sh",
+      "05_howler/Makefile",
+      "05_howler/mk-test-out.sh",
+      "05_howler/README.md",
+      "05_howler/solution1.py",
+      "05_howler/solution2.py",
+      "05_howler/test.py",
+      "05_howler/test-outs/preamble.txt",
+      "05_howler/test-outs/sonnet-29.txt",
+      "05_howler/test-outs/the-bustle.txt"
+    ],
+    "returnPrompt": "Explore the Chapter 05: Howler workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 06: Word Count",
+    "description": "Emulates the `wc` command, counting lines, words, and bytes from multiple inputs or STDIN, including input sample files.",
+    "fileStructure": [
+      "06_wc/all_test.sh",
+      "06_wc/Makefile",
+      "06_wc/README.md",
+      "06_wc/solution.py",
+      "06_wc/test.py",
+      "06_wc/inputs/empty.txt",
+      "06_wc/inputs/foo.txt",
+      "06_wc/inputs/one.txt",
+      "06_wc/inputs/two.txt"
+    ],
+    "returnPrompt": "Explore the Chapter 06: Word Count workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 07: Gashlycrumb",
+    "description": "Program to build and use a lookup table (dictionary) from an input file for text translation, like in the Gashlycrumb poem.",
+    "fileStructure": [
+      "07_gashlycrumb/all_test.sh",
+      "07_gashlycrumb/alternate.txt",
+      "07_gashlycrumb/gashlycrumb.txt",
+      "07_gashlycrumb/gashlycrumb_interactive.py",
+      "07_gashlycrumb/Makefile",
+      "07_gashlycrumb/README.md",
+      "07_gashlycrumb/solution1.py",
+      "07_gashlycrumb/solution2_dict_comp.py",
+      "07_gashlycrumb/solution3_dict_get.py",
+      "07_gashlycrumb/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 07: Gashlycrumb workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 08: Apples and Bananas",
+    "description": "Explores various methods for string character replacement, from for loops to list comprehensions to higher-order functions like map().",
+    "fileStructure": [
+      "08_apples_and_bananas/all_test.sh",
+      "08_apples_and_bananas/Makefile",
+      "08_apples_and_bananas/README.md",
+      "08_apples_and_bananas/solution1_iterate_chars.py",
+      "08_apples_and_bananas/solution2_str_replace.py",
+      "08_apples_and_bananas/solution3_str_translate.py",
+      "08_apples_and_bananas/solution4_list_comprehension.py",
+      "08_apples_and_bananas/solution5.1_no_closure.py",
+      "08_apples_and_bananas/solution5_list_comp_function.py",
+      "08_apples_and_bananas/solution6_map_lambda.py",
+      "08_apples_and_bananas/solution7_map_function.py",
+      "08_apples_and_bananas/solution8_regex.py",
+      "08_apples_and_bananas/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 08: Apples and Bananas workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 09: Abuse",
+    "description": "Generates Shakespearean insults by randomly combining adjectives with a noun, demonstrating randomness and triple-quoted strings.",
+    "fileStructure": [
+      "09_abuse/all_test.sh",
+      "09_abuse/Makefile",
+      "09_abuse/README.md",
+      "09_abuse/solution.py",
+      "09_abuse/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 09: Abuse workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 10: Telephone",
+    "description": "Implements probabilistic and deterministic approaches to randomly mutate a string, akin to the 'Telephone' game.",
+    "fileStructure": [
+      "10_telephone/all_test.sh",
+      "10_telephone/Makefile",
+      "10_telephone/README.md",
+      "10_telephone/solution1.py",
+      "10_telephone/solution2_list.py",
+      "10_telephone/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 10: Telephone workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 11: Bottles of Beer",
+    "description": "Generates verses for the '99 Bottles of Beer' song, focusing on counting down, string formatting, and algorithm design.",
+    "fileStructure": [
+      "11_bottles_of_beer/all_test.sh",
+      "11_bottles_of_beer/Makefile",
+      "11_bottles_of_beer/mk-sums.sh",
+      "11_bottles_of_beer/README.md",
+      "11_bottles_of_beer/solution.py",
+      "11_bottles_of_beer/sums.txt",
+      "11_bottles_of_beer/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 11: Bottles of Beer workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 12: Ransom",
+    "description": "Creates ransom notes by randomly capitalizing letters in text, exploring various approaches using for loops, list comprehensions, and map().",
+    "fileStructure": [
+      "12_ransom/all_test.sh",
+      "12_ransom/Makefile",
+      "12_ransom/README.md",
+      "12_ransom/solution1_for_loop.py",
+      "12_ransom/solution2_for_append_list.py",
+      "12_ransom/solution3_for_append_string.py",
+      "12_ransom/solution4_list_comprehension.py",
+      "12_ransom/solution5_shorter_list_comp.py",
+      "12_ransom/solution6_map.py",
+      "12_ransom/solution7_shorter_map.py",
+      "12_ransom/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 12: Ransom workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 13: Twelve Days of Christmas",
+    "description": "Generates verses for 'The Twelve Days of Christmas' song, focusing on function writing, testing, and generating output.",
+    "fileStructure": [
+      "13_twelve_days/all_test.sh",
+      "13_twelve_days/Makefile",
+      "13_twelve_days/mk-outs.sh",
+      "13_twelve_days/README.md",
+      "13_twelve_days/solution.py",
+      "13_twelve_days/solution_emoji.py",
+      "13_twelve_days/test.py",
+      "13_twelve_days/test-out/1.out",
+      "13_twelve_days/test-out/10.out",
+      "13_twelve_days/test-out/11.out",
+      "13_twelve_days/test-out/12.out",
+      "13_twelve_days/test-out/2.out",
+      "13_twelve_days/test-out/3.out",
+      "13_twelve_days/test-out/4.out",
+      "13_twelve_days/test-out/5.out",
+      "13_twelve_days/test-out/6.out",
+      "13_twelve_days/test-out/7.out",
+      "13_twelve_days/test-out/8.out",
+      "13_twelve_days/test-out/9.out"
+    ],
+    "returnPrompt": "Explore the Chapter 13: Twelve Days of Christmas workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 14: The Rhymer",
+    "description": "Splits words into stems and appends prefixes to create rhymes, exploring regular expressions and list comprehensions with guards.",
+    "fileStructure": [
+      "14_rhymer/all_test.sh",
+      "14_rhymer/Makefile",
+      "14_rhymer/README.md",
+      "14_rhymer/solution1_regex.py",
+      "14_rhymer/solution2_no_regex.py",
+      "14_rhymer/solution3_dict_words.py",
+      "14_rhymer/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 14: The Rhymer workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 15: Kentucky Friar",
+    "description": "Applies complex regex patterns to modify text for humorous results, such as replacing 'you' with 'y'all' and changing '-ing' endings.",
+    "fileStructure": [
+      "15_kentucky_friar/all_test.sh",
+      "15_kentucky_friar/Makefile",
+      "15_kentucky_friar/mk-outs.sh",
+      "15_kentucky_friar/README.md",
+      "15_kentucky_friar/solution1_regex.py",
+      "15_kentucky_friar/solution2_re_compile.py",
+      "15_kentucky_friar/solution3_no_regex.py",
+      "15_kentucky_friar/test.py",
+      "15_kentucky_friar/inputs/banner.txt",
+      "15_kentucky_friar/inputs/banner.txt.out",
+      "15_kentucky_friar/inputs/blake.txt",
+      "15_kentucky_friar/inputs/blake.txt.out",
+      "15_kentucky_friar/inputs/dickinson.txt",
+      "15_kentucky_friar/inputs/dickinson.txt.out",
+      "15_kentucky_friar/inputs/raven.txt",
+      "15_kentucky_friar/inputs/raven.txt.out",
+      "15_kentucky_friar/inputs/shakespeare.txt",
+      "15_kentucky_friar/inputs/shakespeare.txt.out"
+    ],
+    "returnPrompt": "Explore the Chapter 15: Kentucky Friar workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 16: The Scrambler",
+    "description": "Scrambles letters within words while keeping the first and last letters in place, using regular expressions and random functions.",
+    "fileStructure": [
+      "16_scrambler/all_test.sh",
+      "16_scrambler/intro.txt",
+      "16_scrambler/Makefile",
+      "16_scrambler/README.md",
+      "16_scrambler/solution.py",
+      "16_scrambler/test.py"
+    ],
+    "returnPrompt": "Explore the Chapter 16: The Scrambler workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 17: Mad Libs",
+    "description": "Implements the classic Mad Libs game, reading templates and prompting for user input to fill placeholders using regular expressions.",
+    "fileStructure": [
+      "17_mad_libs/all_test.sh",
+      "17_mad_libs/Makefile",
+      "17_mad_libs/README.md",
+      "17_mad_libs/solution1_regex.py",
+      "17_mad_libs/solution2_no_regex.py",
+      "17_mad_libs/test.py",
+      "17_mad_libs/inputs/fox.txt",
+      "17_mad_libs/inputs/help.txt",
+      "17_mad_libs/inputs/no_blanks.txt",
+      "17_mad_libs/inputs/romeo_juliet.txt"
+    ],
+    "returnPrompt": "Explore the Chapter 17: Mad Libs workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 18: Gematria",
+    "description": "Program likely for numerical interpretation of text (gematria), based on the folder name and typical project structure.",
+    "fileStructure": [
+      "18_gematria/all_test.sh",
+      "18_gematria/asciitbl.py",
+      "18_gematria/Makefile",
+      "18_gematria/README.md",
+      "18_gematria/solution.py",
+      "18_gematria/test.py",
+      "18_gematria/words.txt"
+    ],
+    "returnPrompt": "Explore the Chapter 18: Gematria workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 19: WOD (Workout of the Day)",
+    "description": "Processes workout data, likely from CSV, demonstrating various Python data processing techniques including manual parsing, CSV module, and Pandas.",
+    "fileStructure": [
+      "19_wod/all_test.sh",
+      "19_wod/Makefile",
+      "19_wod/manual1.py",
+      "19_wod/manual2_list_comprehension.py",
+      "19_wod/manual3_map.py",
+      "19_wod/README.md",
+      "19_wod/requirements.txt",
+      "19_wod/solution1.py",
+      "19_wod/solution2.py",
+      "19_wod/test.py",
+      "19_wod/unit.py",
+      "19_wod/using_csv1.py",
+      "19_wod/using_csv2.py",
+      "19_wod/using_csv3.py",
+      "19_wod/using_pandas.py",
+      "19_wod/inputs/bad-delimiter.tab",
+      "19_wod/inputs/bad-empty.csv",
+      "19_wod/inputs/bad-headers-only.csv",
+      "19_wod/inputs/bad-headers.csv",
+      "19_wod/inputs/bad-reps.csv",
+      "19_wod/inputs/exercises.csv",
+      "19_wod/inputs/silly-exercises.csv"
+    ],
+    "returnPrompt": "Explore the Chapter 19: WOD (Workout of the Day) workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 20: Password Generator",
+    "description": "Generates passwords, likely using words from various categorized text sources (adjectives, nouns, verbs) from different literary works.",
+    "fileStructure": [
+      "20_password/all_test.sh",
+      "20_password/harvest.py",
+      "20_password/Makefile",
+      "20_password/README.md",
+      "20_password/solution.py",
+      "20_password/test.py",
+      "20_password/unit.py",
+      "20_password/const/adjs.txt",
+      "20_password/const/nouns.txt",
+      "20_password/const/verbs.txt",
+      "20_password/scarlet/adjs.txt",
+      "20_password/scarlet/nouns.txt",
+      "20_password/scarlet/verbs.txt",
+      "20_password/sonnets/adjs.txt",
+      "20_password/sonnets/nouns.txt",
+      "20_password/sonnets/verbs.txt"
+    ],
+    "returnPrompt": "Explore the Chapter 20: Password Generator workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 21: Tic-Tac-Toe",
+    "description": "Implements the classic Tic-Tac-Toe game, focusing on game logic and basic Python programming concepts.",
+    "fileStructure": [
+      "21_tictactoe/all_test.sh",
+      "21_tictactoe/Makefile",
+      "21_tictactoe/README.md",
+      "21_tictactoe/solution1.py",
+      "21_tictactoe/solution2.py",
+      "21_tictactoe/test.py",
+      "21_tictactoe/unit.py"
+    ],
+    "returnPrompt": "Explore the Chapter 21: Tic-Tac-Toe workspace.",
+    "assumptions": "Each numbered directory represents a distinct chapter/exercise from the book, containing its own code, tests, and documentation."
+  },
+  {
+    "name": "Chapter 22: Interactive Tic-Tac-Toe",
+    "description": "An enhanced or interactive version of the Tic-Tac-Toe game, potentially exploring advanced Python features like type hints.",
+    "fileStructure": [
+      "22_itictactoe/Makefile",
+      "22_itictactoe/README.md",
+      "22_itictactoe/solution1.py",
+      "22_itictactoe/solution2_typed_dict.py",
+      "22_itictactoe/typehints.py",
+      "22_itictactoe/typehints2.py",
+      "22_itictactoe/unit.py"
+    ],
+    "returnPrompt": "Explore the Chapter 22: Interactive Tic-Tac-Toe workspace.",
+    "assumptions": "The 'i' prefix in the folder name suggests an interactive version of Tic-Tac-Toe, and the presence of 'typehints.py' indicates a focus on type hinting concepts."
+  },
+  {
+    "name": "Appendix: Windows Setup",
+    "description": "Documentation and related files for setting up the development environment on Windows.",
+    "fileStructure": [
+      "appendix/Makefile",
+      "appendix/SETUP_WINDOWS.adoc",
+      "appendix/SETUP_WINDOWS.pdf"
+    ],
+    "returnPrompt": "Explore the Appendix: Windows Setup workspace.",
+    "assumptions": "The 'appendix' folder contains supplementary materials, with 'SETUP_WINDOWS' files clearly indicating their purpose."
+  },
+  {
+    "name": "Appendix: Argparse Examples",
+    "description": "A collection of small Python scripts demonstrating various functionalities and patterns of the `argparse` module.",
+    "fileStructure": [
+      "appendix_argparse/cat_n.py",
+      "appendix_argparse/cat_n_manual.py",
+      "appendix_argparse/choices.py",
+      "appendix_argparse/manual.py",
+      "appendix_argparse/nargs+.py",
+      "appendix_argparse/nargs2.py",
+      "appendix_argparse/one_arg.py",
+      "appendix_argparse/README.md",
+      "appendix_argparse/two_args.py"
+    ],
+    "returnPrompt": "Explore the Appendix: Argparse Examples workspace.",
+    "assumptions": "This folder is explicitly for examples related to Python's argparse module."
+  },
+  {
+    "name": "Development Tools",
+    "description": "Utility scripts for project setup or generating new exercise templates.",
+    "fileStructure": [
+      "bin/new.py",
+      "template/template.py"
+    ],
+    "returnPrompt": "Explore the Development Tools workspace.",
+    "assumptions": "'bin/new.py' is likely a script to create new project structures based on 'template/template.py'."
+  },
+  {
+    "name": "Docker Environment",
+    "description": "Files related to setting up and managing a Docker containerized development or execution environment for the projects.",
+    "fileStructure": [
+      "docker/Dockerfile",
+      "docker/Makefile",
+      "docker/README.md"
+    ],
+    "returnPrompt": "Explore the Docker Environment workspace.",
+    "assumptions": "The 'docker' directory clearly indicates its purpose for containerization."
+  },
+  {
+    "name": "Extra Exercises",
+    "description": "A consolidated collection of additional exercises from the book's supplementary materials, covering diverse Python concepts and mini-projects.",
+    "fileStructure": [
+      "extra/Makefile",
+      "extra/README.md",
+      "extra/02_dna/Makefile",
+      "extra/02_dna/README.adoc",
+      "extra/02_dna/README.pdf",
+      "extra/02_dna/test.py",
+      "extra/02_spanish/Makefile",
+      "extra/02_spanish/README.adoc",
+      "extra/02_spanish/README.pdf",
+      "extra/02_spanish/test.py",
+      "extra/02_strings/Makefile",
+      "extra/02_strings/README.adoc",
+      "extra/02_strings/README.pdf",
+      "extra/02_strings/test.py",
+      "extra/03_lister/Makefile",
+      "extra/03_lister/README.adoc",
+      "extra/03_lister/README.pdf",
+      "extra/03_lister/test.py",
+      "extra/04_days/Makefile",
+      "extra/04_days/README.adoc",
+      "extra/04_days/README.pdf",
+      "extra/04_days/test.py",
+      "extra/06_head/Makefile",
+      "extra/06_head/README.adoc",
+      "extra/06_head/test.py",
+      "extra/06_head/inputs/gettysburg.txt",
+      "extra/06_head/inputs/sonnet-29.txt",
+      "extra/06_head/inputs/the-bustle.txt",
+      "extra/07_proteins/codons.dna",
+      "extra/07_proteins/codons.rna",
+      "extra/07_proteins/input.dna",
+      "extra/07_proteins/input.rna",
+      "extra/07_proteins/Makefile",
+      "extra/07_proteins/README.adoc",
+      "extra/07_proteins/README.pdf",
+      "extra/07_proteins/test.py",
+      "extra/08_rna/Makefile",
+      "extra/08_rna/README.adoc",
+      "extra/08_rna/README.pdf",
+      "extra/08_rna/test.py",
+      "extra/08_rna/inputs/input1.txt",
+      "extra/08_rna/inputs/input2.txt",
+      "extra/09_moog/Makefile",
+      "extra/09_moog/README.adoc",
+      "extra/09_moog/README.pdf",
+      "extra/09_moog/test.py",
+      "extra/10_whitmans/.gitignore",
+      "extra/10_whitmans/Makefile",
+      "extra/10_whitmans/README.adoc",
+      "extra/10_whitmans/README.pdf",
+      "extra/10_whitmans/requirements.txt",
+      "extra/10_whitmans/solution.py",
+      "extra/10_whitmans/test.py"
+    ],
+    "returnPrompt": "Explore the Extra Exercises workspace.",
+    "assumptions": "All 'extra/' subdirectories are consolidated into one workspace to meet the maximum workspace count constraint, as they represent additional exercises similar in nature to the main chapters."
+  },
+  {
+    "name": "Shared Input Data",
+    "description": "A collection of general-purpose text files and a zip archive used as common inputs for various exercises across the project.",
+    "fileStructure": [
+      "inputs/.gitignore",
+      "inputs/const.txt",
+      "inputs/dickinson.txt",
+      "inputs/fox.txt",
+      "inputs/gettysburg.txt",
+      "inputs/issa.txt",
+      "inputs/Makefile",
+      "inputs/nobody.txt",
+      "inputs/now.txt",
+      "inputs/out.txt",
+      "inputs/preamble.txt",
+      "inputs/scarlet.txt",
+      "inputs/sonnet-29.txt",
+      "inputs/sonnets.txt",
+      "inputs/spiders.txt",
+      "inputs/the-bustle.txt",
+      "inputs/usdeclar.txt",
+      "inputs/words.txt.zip"
+    ],
+    "returnPrompt": "Explore the Shared Input Data workspace.",
+    "assumptions": "This folder contains data files that are not exclusively tied to a single exercise but can be used across multiple chapters."
+  }
+]
