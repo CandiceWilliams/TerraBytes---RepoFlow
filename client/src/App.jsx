@@ -5,6 +5,7 @@ import RepoLink from './RepoLink.jsx';
 import WorkSpace from './WorkSpace.jsx';
 import ChatPage from './ChatPage.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "@fontsource/poppins";
 
 const API_BASE_URL = 'http://127.0.0.1:8000'; // Replace with your FastAPI backend URL
 
@@ -37,7 +38,7 @@ const MainFlow = () => {
   }, [isProcessing]);
 
   return (
-    <>
+    <div style={{ fontFamily: "Poppins, sans-serif" }}>
       {!repoReceived && !isProcessing ? (
         <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center text-center" style={{ backgroundColor: '#04374f', color: 'white', padding: '2rem' }}>
           <img
@@ -50,7 +51,7 @@ const MainFlow = () => {
           <h1 className="fw-bold display-4 mb-2">RepoFlow</h1>
 
           <p className="mb-4 fs-6">
-            Paste your GitHub Repository link and we’ll
+            Paste your GitHub Repository link and we’ll analyze it for you!
           </p>
 
           <RepoLink onRepoSubmitted={() => setIsProcessing(true)} />
@@ -67,7 +68,7 @@ const MainFlow = () => {
       ) : (
         <WorkSpace />
       )}
-    </>
+    </div>
   );
 };
 

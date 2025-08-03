@@ -57,7 +57,7 @@ const PromptPage = () => {
       {/* Input area */}
       <div style={textareaContainerStyle}>
         <textarea
-          placeholder="What would you like to code"
+          placeholder="Enter your prompt here..."
           style={textareaStyle}
         />
         <button

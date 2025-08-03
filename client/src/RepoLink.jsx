@@ -48,61 +48,60 @@ export default function RepoLink({ onRepoSubmitted }) {
         }
       };
 
-  // return (
-  //   <>
-  //     <div className="bg-dark text-light min-vh-200 d-flex align-items-center justify-content-center p-4">
-  //       {/* Card-like container for the input form */}
-  //       <div>
-  //         {/* Main title of the application */}
-  //         <div className="d-flex align-items-center justify-content-center mb-4">
-  //           <h1 className="display-4 fw-bold text-light text-center">
-  //             RepoFlow
-  //           </h1>
-  //         </div>
+  return (/*
+     <>
+       <div className="bg-dark text-light min-vh-200 d-flex align-items-center justify-content-center p-4">*/
+      <div>
+      {/* Main title of the application
+        <div className="d-flex align-items-center justify-content-center mb-4">
+           <h1 className="display-4 fw-bold text-light text-center">
+               RepoFlow
+             </h1>
+           </div> */}
 
-  //         {/* Descriptive text for the user */}
-  //         <p className="text-center text-white mb-5 lead">
-  //           Enter a GitHub repository URL to get started. RepoFlow will analyze
-  //           the repository and provide a structured overview.
-  //         </p>
+           {/* Descriptive text for the user */}
+           {/* <p className="text-center text-white mb-5 lead">
+             Paste your GitHub Repository link and we’ll analyze it for you! 
+           </p> */}
 
-  //         {/* Display messages to the user */}
-  //         {message && (
-  //           <div className={`alert ${isError ? 'alert-danger' : 'alert-info'}`} role="alert">
-  //             {message}
-  //           </div>
-  //         )}
+           {/* Display messages to the user */}
+           {message && (
+             <div className={`alert ${isError ? 'alert-danger' : 'alert-info'}`} role="alert">
+               {message}
+             </div>
+           )}
 
-  //         {/* The form for submitting the URL */}
-  //         <form onSubmit={handleSubmit}>
-  //           <div className="mb-3">
-  //             <label htmlFor="repo-url" className="form-label visually-hidden">
-  //               GitHub Repository URL
-  //             </label>
-  //             <input
-  //               id="repo-url"
-  //               type="text"
-  //               placeholder="https://github.com/owner/repository"
-  //               value={repoUrl}
-  //               onChange={handleInputChange}
-  //               className="form-control form-control-lg bg-secondary text-white border-0"
-  //               required
-  //             />
-  //           </div>
+                 <form onSubmit={handleSubmit}>
+                 <div className="mb-3">
+                   <label htmlFor="repo-url" className="form-label visually-hidden">
+                   GitHub Repository URL
+                   </label>
+                   <input
+                   id="repo-url"
+                   type="text"
+                   placeholder="https://github.com/owner/repository"
+                   value={repoUrl}
+                   onChange={handleInputChange}
+                   className="form-control form-control-lg bg-secondary text-white border-0"
+                   required
+                   size={50} // Set the length of the text box
+                   style={{ ...styles.input, width: 'auto' }} // Optional: override width if needed
+                   />
+                 </div>
 
-  //           {/* Submit button */}
-  //           <button
-  //           style={styles.button}
-  //             type="submit"
-  //             className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
-  //           >
-  //             Analyze Repo
-  //           </button>
-  //         </form>
-  //       </div>
-  //     </div>
-  //   </>
-  // );
+                 {/* Submit button */}
+             <button
+             style={styles.button}
+               type="submit"
+               className="btn btn-primary btn-lg w-40 fw-bold shadow-sm"
+             >
+               Analyze Repo
+             </button>
+           </form>
+         </div>
+      //  </div>
+    //  </>
+  );
 }
 
 const styles = {
@@ -129,12 +128,12 @@ const styles = {
     fontWeight: 'bold',
     marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 18, // Increased font size for subtitle
-    fontWeight: 'normal', // Can be 'bold' or 'normal' based on preference
-    marginBottom: 24,
-    color: '#D0D6DB', // This color looks good for contrast
-  },
+  // subtitle: {
+  //   fontSize: 18, // Increased font size for subtitle
+  //   fontWeight: 'normal', // Can be 'bold' or 'normal' based on preference
+  //   marginBottom: 24,
+  //   color: '#D0D6DB', // This color looks good for contrast
+  // },
   input: {
     width: '100%',
     maxWidth: 600,
