@@ -13,7 +13,7 @@ except KeyError:
     pass
 
 # Initialize the Gemini model globally
-model = genai.GenerativeModel('gemini-2.5-pro')
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 # Define the prompt as a constant within this file.
 STAGE1_PROMPT = """

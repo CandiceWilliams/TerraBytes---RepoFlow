@@ -99,10 +99,10 @@ async def _load_rag_model():
     
     faiss_index_path = os.path.join(VECTOR_DB_DIR, "faiss_index.bin")
 
-    # Wait for the faiss index file to be created by smart_chunking
-    while not os.path.exists(faiss_index_path) or os.path.getsize(faiss_index_path) == 0:
-        print("Waiting for FAISS index file to be created...")
-        time.sleep(2) # Poll every 2 seconds
+    # The wrapper function ensures this file exists, but we'll check its size
+    if not os.path.exists(faiss_index_path) or os.path.getsize(faiss_index_path) == 0:
+        print("ERROR: FAISS index file is missing or empty. RAG model cannot be loaded.")
+        return
 
     try:
         print("Loading RAG model into memory...")
