@@ -7,3 +7,4 @@ llama-index-vector-stores-faiss
 faiss-cpu
 google-generativeai
 pydantic
+llama-index-llms-gemini
