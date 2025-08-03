@@ -1,0 +1,90 @@
+/* custom.css */
+
+/* Dark navy */
+.bg-custom-1 {
+  background-color: #012a4a !important;
+}
+
+/* Deep ocean blue */
+.bg-custom-2 {
+  background-color: #01497c !important;
+}
+
+/* Mid-tone blue */
+.bg-custom-3 {
+  background-color: #014f86 !important;
+}
+
+.bg-custom-4{
+    background-color: #89c2d9 !important;
+}
+
+/* Soft sky blue */
+.btn-custom-1 {
+  background-color: #89c2d9 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-1:hover {
+  background-color: #6bb6d6 !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(137, 194, 217, 0.3) !important;
+}
+
+.btn-custom-1:active {
+  background-color: #5aa5c7 !important;
+  transform: translateY(0px);
+}
+
+.btn-custom-1:disabled {
+  background-color: #89c2d9 !important;
+  opacity: 0.6;
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+
+/* Pale aqua */
+.text-custom-1 {
+  background-color: #caf0f8 !important;
+}
+
+/* Additional hover effects for other custom buttons */
+.btn-custom-2 {
+  background-color: #025a8c !important;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-2:hover {
+  background-color: #025a8c !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(1, 73, 124, 0.3) !important;
+}
+
+.btn-custom-3 {
+  background-color: #026096 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-3:hover {
+  background-color: #026096 !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(1, 79, 134, 0.3) !important;
+}
+
+/* General hover class you can apply anywhere */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Smooth transitions for all custom buttons */
+.btn-custom-1,
+.btn-custom-2,
+.btn-custom-3 {
+  transition: all 0.3s ease;
+}

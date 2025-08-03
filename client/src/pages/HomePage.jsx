@@ -28,7 +28,9 @@ function Homepage({ onAnalyze }) {
         style={styles.input}
       />
 
-      <button onClick={handleClick} style={styles.button}>
+      <button 
+        onClick={handleClick} 
+        className=''>
         Analyze Repo
       </button>
     </div>

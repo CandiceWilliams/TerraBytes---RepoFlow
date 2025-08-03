@@ -1,0 +1,513 @@
+[
+  {
+    "name": "Project Core Setup",
+    "description": "Files defining the project's overall build system, dependencies, and general documentation applicable across all exercises.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/.gitignore",
+      "tiny_python_projects-32243470/all_test.sh",
+      "tiny_python_projects-32243470/LICENSE",
+      "tiny_python_projects-32243470/Makefile",
+      "tiny_python_projects-32243470/README.md",
+      "tiny_python_projects-32243470/requirements.txt"
+    ],
+    "returnPrompt": "project-core-setup",
+    "assumptions": "These files provide top-level configuration and documentation for the entire repository of tiny projects."
+  },
+  {
+    "name": "Project Utilities & Template",
+    "description": "Contains a utility script for scaffolding new project directories and a basic template file for new Python exercises.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/bin/new.py",
+      "tiny_python_projects-32243470/template/template.py"
+    ],
+    "returnPrompt": "project-utilities-template",
+    "assumptions": "`bin/new.py` is inferred to be a project creation script, likely utilizing `template/template.py` as a base."
+  },
+  {
+    "name": "Docker Environment",
+    "description": "Configuration files for setting up a containerized development environment using Docker.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/docker/Dockerfile",
+      "tiny_python_projects-32243470/docker/Makefile",
+      "tiny_python_projects-32243470/docker/README.md"
+    ],
+    "returnPrompt": "docker-environment",
+    "assumptions": "These files are exclusively for building and managing a Docker container for the project environment."
+  },
+  {
+    "name": "Windows Setup Guide",
+    "description": "Documentation and a Makefile specific to setting up the development environment on Windows.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/appendix/Makefile",
+      "tiny_python_projects-32243470/appendix/SETUP_WINDOWS.adoc",
+      "tiny_python_projects-32243470/appendix/SETUP_WINDOWS.pdf"
+    ],
+    "returnPrompt": "windows-setup-guide",
+    "assumptions": "This appendix focuses solely on providing setup instructions for Windows users."
+  },
+  {
+    "name": "Argparse Examples Appendix",
+    "description": "A collection of small Python scripts demonstrating various functionalities and usage patterns of the `argparse` module.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/appendix_argparse/cat_n.py",
+      "tiny_python_projects-32243470/appendix_argparse/cat_n_manual.py",
+      "tiny_python_projects-32243470/appendix_argparse/choices.py",
+      "tiny_python_projects-32243470/appendix_argparse/manual.py",
+      "tiny_python_projects-32243470/appendix_argparse/nargs+.py",
+      "tiny_python_projects-32243470/appendix_argparse/nargs2.py",
+      "tiny_python_projects-32243470/appendix_argparse/one_arg.py",
+      "tiny_python_projects-32243470/appendix_argparse/README.md",
+      "tiny_python_projects-32243470/appendix_argparse/two_args.py"
+    ],
+    "returnPrompt": "argparse-examples-appendix",
+    "assumptions": "These files are supplementary educational examples related to command-line argument parsing, not core 'tiny projects' themselves."
+  },
+  {
+    "name": "Chapter 01-02: Basics & Argument Parsing",
+    "description": "Covers foundational Python concepts like printing, comments, shebang, and basic command-line argument parsing for single or multiple inputs.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/01_hello/hello01_print.py",
+      "tiny_python_projects-32243470/01_hello/hello02_comment.py",
+      "tiny_python_projects-32243470/01_hello/hello03_shebang.py",
+      "tiny_python_projects-32243470/01_hello/hello04_argparse_positional.py",
+      "tiny_python_projects-32243470/01_hello/hello05_argparse_option.py",
+      "tiny_python_projects-32243470/01_hello/hello06_main_function.py",
+      "tiny_python_projects-32243470/01_hello/hello07_get_args.py",
+      "tiny_python_projects-32243470/01_hello/hello08_formatted.py",
+      "tiny_python_projects-32243470/01_hello/Makefile",
+      "tiny_python_projects-32243470/01_hello/README.md",
+      "tiny_python_projects-32243470/01_hello/test.py",
+      "tiny_python_projects-32243470/02_crowsnest/all_test.sh",
+      "tiny_python_projects-32243470/02_crowsnest/Makefile",
+      "tiny_python_projects-32243470/02_crowsnest/README.md",
+      "tiny_python_projects-32243470/02_crowsnest/solution.py",
+      "tiny_python_projects-32243470/02_crowsnest/test.py"
+    ],
+    "returnPrompt": "chapter-01-02-basics",
+    "assumptions": "Chapters 1 and 2 are grouped due to their foundational nature and shared focus on basic command-line interactions and Python syntax."
+  },
+  {
+    "name": "Chapter 03-04: String Manipulation & Encoding",
+    "description": "Focuses on manipulating and formatting strings based on arguments, including a simple encoding scheme using dictionaries.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/03_picnic/all_test.sh",
+      "tiny_python_projects-32243470/03_picnic/Makefile",
+      "tiny_python_projects-32243470/03_picnic/README.md",
+      "tiny_python_projects-32243470/03_picnic/solution.py",
+      "tiny_python_projects-32243470/03_picnic/test.py",
+      "tiny_python_projects-32243470/04_jump_the_five/all_test.sh",
+      "tiny_python_projects-32243470/04_jump_the_five/Makefile",
+      "tiny_python_projects-32243470/04_jump_the_five/README.md",
+      "tiny_python_projects-32243470/04_jump_the_five/solution1.py",
+      "tiny_python_projects-32243470/04_jump_the_five/solution2.py",
+      "tiny_python_projects-32243470/04_jump_the_five/solution3.py",
+      "tiny_python_projects-32243470/04_jump_the_five/solution4.py",
+      "tiny_python_projects-32243470/04_jump_the_five/solution5.py",
+      "tiny_python_projects-32243470/04_jump_the_five/test.py"
+    ],
+    "returnPrompt": "chapter-03-04-string-encoding",
+    "assumptions": "Chapters 3 and 4 are grouped based on their common theme of processing and transforming text/strings."
+  },
+  {
+    "name": "Chapter 05-06: File I/O & Word Count",
+    "description": "Explores reading from and writing to files, including command-line input, and implementing a word count utility similar to `wc`.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/05_howler/.gitignore",
+      "tiny_python_projects-32243470/05_howler/all_test.sh",
+      "tiny_python_projects-32243470/05_howler/Makefile",
+      "tiny_python_projects-32243470/05_howler/mk-test-out.sh",
+      "tiny_python_projects-32243470/05_howler/README.md",
+      "tiny_python_projects-32243470/05_howler/solution1.py",
+      "tiny_python_projects-32243470/05_howler/solution2.py",
+      "tiny_python_projects-32243470/05_howler/test.py",
+      "tiny_python_projects-32243470/05_howler/test-outs/preamble.txt",
+      "tiny_python_projects-32243470/05_howler/test-outs/sonnet-29.txt",
+      "tiny_python_projects-32243470/05_howler/test-outs/the-bustle.txt",
+      "tiny_python_projects-32243470/06_wc/all_test.sh",
+      "tiny_python_projects-32243470/06_wc/Makefile",
+      "tiny_python_projects-32243470/06_wc/README.md",
+      "tiny_python_projects-32243470/06_wc/solution.py",
+      "tiny_python_projects-32243470/06_wc/test.py",
+      "tiny_python_projects-32243470/06_wc/inputs/empty.txt",
+      "tiny_python_projects-32243470/06_wc/inputs/foo.txt",
+      "tiny_python_projects-32243470/06_wc/inputs/one.txt",
+      "tiny_python_projects-32243470/06_wc/inputs/two.txt"
+    ],
+    "returnPrompt": "chapter-05-06-file-io-wc",
+    "assumptions": "Chapters 5 and 6 are grouped due to their shared focus on handling file inputs and outputs, and text processing."
+  },
+  {
+    "name": "Chapter 07-08: Data Structures & String Replacement",
+    "description": "Explores building lookup tables (dictionaries) for text translation and various methods for finding and replacing elements within strings.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/07_gashlycrumb/all_test.sh",
+      "tiny_python_projects-32243470/07_gashlycrumb/alternate.txt",
+      "tiny_python_projects-32243470/07_gashlycrumb/gashlycrumb.txt",
+      "tiny_python_projects-32243470/07_gashlycrumb/gashlycrumb_interactive.py",
+      "tiny_python_projects-32243470/07_gashlycrumb/Makefile",
+      "tiny_python_projects-32243470/07_gashlycrumb/README.md",
+      "tiny_python_projects-32243470/07_gashlycrumb/solution1.py",
+      "tiny_python_projects-32243470/07_gashlycrumb/solution2_dict_comp.py",
+      "tiny_python_projects-32243470/07_gashlycrumb/solution3_dict_get.py",
+      "tiny_python_projects-32243470/07_gashlycrumb/test.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/all_test.sh",
+      "tiny_python_projects-32243470/08_apples_and_bananas/Makefile",
+      "tiny_python_projects-32243470/08_apples_and_bananas/README.md",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution1_iterate_chars.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution2_str_replace.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution3_str_translate.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution4_list_comprehension.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution5.1_no_closure.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution5_list_comp_function.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution6_map_lambda.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution7_map_function.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/solution8_regex.py",
+      "tiny_python_projects-32243470/08_apples_and_bananas/test.py"
+    ],
+    "returnPrompt": "chapter-07-08-data-strings",
+    "assumptions": "Chapters 7 and 8 are grouped for their emphasis on using data structures (dictionaries) and various programming techniques for text manipulation."
+  },
+  {
+    "name": "Chapter 09-10: Randomness & Mutation",
+    "description": "Explores generating random text like Shakespearean insults and applying probabilistic and deterministic mutations to strings.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/09_abuse/all_test.sh",
+      "tiny_python_projects-32243470/09_abuse/Makefile",
+      "tiny_python_projects-32243470/09_abuse/README.md",
+      "tiny_python_projects-32243470/09_abuse/solution.py",
+      "tiny_python_projects-32243470/09_abuse/test.py",
+      "tiny_python_projects-32243470/10_telephone/all_test.sh",
+      "tiny_python_projects-32243470/10_telephone/Makefile",
+      "tiny_python_projects-32243470/10_telephone/README.md",
+      "tiny_python_projects-32243470/10_telephone/solution1.py",
+      "tiny_python_projects-32243470/10_telephone/solution2_list.py",
+      "tiny_python_projects-32243470/10_telephone/test.py"
+    ],
+    "returnPrompt": "chapter-09-10-random-mutation",
+    "assumptions": "Chapters 9 and 10 are grouped due to their common theme of randomness and string alteration."
+  },
+  {
+    "name": "Chapter 11-12: Song Verses & Ransom Notes",
+    "description": "Focuses on generating patterned text like song lyrics and creating ransom notes by randomly capitalizing letters, exploring various iteration techniques.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/11_bottles_of_beer/all_test.sh",
+      "tiny_python_projects-32243470/11_bottles_of_beer/Makefile",
+      "tiny_python_projects-32243470/11_bottles_of_beer/mk-sums.sh",
+      "tiny_python_projects-32243470/11_bottles_of_beer/README.md",
+      "tiny_python_projects-32243470/11_bottles_of_beer/solution.py",
+      "tiny_python_projects-32243470/11_bottles_of_beer/sums.txt",
+      "tiny_python_projects-32243470/11_bottles_of_beer/test.py",
+      "tiny_python_projects-32243470/12_ransom/all_test.sh",
+      "tiny_python_projects-32243470/12_ransom/Makefile",
+      "tiny_python_projects-32243470/12_ransom/README.md",
+      "tiny_python_projects-32243470/12_ransom/solution1_for_loop.py",
+      "tiny_python_projects-32243470/12_ransom/solution2_for_append_list.py",
+      "tiny_python_projects-32243470/12_ransom/solution3_for_append_string.py",
+      "tiny_python_projects-32243470/12_ransom/solution4_list_comprehension.py",
+      "tiny_python_projects-32243470/12_ransom/solution5_shorter_list_comp.py",
+      "tiny_python_projects-32243470/12_ransom/solution6_map.py",
+      "tiny_python_projects-32243470/12_ransom/solution7_shorter_map.py",
+      "tiny_python_projects-32243470/12_ransom/test.py"
+    ],
+    "returnPrompt": "chapter-11-12-text-generation",
+    "assumptions": "Chapters 11 and 12 are grouped for their focus on generating structured or randomly altered text, showcasing different Pythonic approaches."
+  },
+  {
+    "name": "Chapter 13-14: Song Verses & Rhyming",
+    "description": "Involves generating verses for a song and creating new rhyming words by manipulating word structures, including an introduction to regular expressions.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/13_twelve_days/all_test.sh",
+      "tiny_python_projects-32243470/13_twelve_days/Makefile",
+      "tiny_python_projects-32243470/13_twelve_days/mk-outs.sh",
+      "tiny_python_projects-32243470/13_twelve_days/README.md",
+      "tiny_python_projects-32243470/13_twelve_days/solution.py",
+      "tiny_python_projects-32243470/13_twelve_days/solution_emoji.py",
+      "tiny_python_projects-32243470/13_twelve_days/test.py",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/1.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/10.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/11.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/12.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/2.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/3.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/4.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/5.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/6.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/7.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/8.out",
+      "tiny_python_projects-32243470/13_twelve_days/test-out/9.out",
+      "tiny_python_projects-32243470/14_rhymer/all_test.sh",
+      "tiny_python_projects-32243470/14_rhymer/Makefile",
+      "tiny_python_projects-32243470/14_rhymer/README.md",
+      "tiny_python_projects-32243470/14_rhymer/solution1_regex.py",
+      "tiny_python_projects-32243470/14_rhymer/solution2_no_regex.py",
+      "tiny_python_projects-32243470/14_rhymer/solution3_dict_words.py",
+      "tiny_python_projects-32243470/14_rhymer/test.py"
+    ],
+    "returnPrompt": "chapter-13-14-regex-text",
+    "assumptions": "Chapters 13 and 14 are grouped for their focus on generating formatted text and early exploration of text pattern matching using regular expressions."
+  },
+  {
+    "name": "Chapter 15-16: Advanced Regex & Scrambling",
+    "description": "Delves deeper into regular expressions for text splitting and replacement ('Kentucky Friar' transformations) and scrambling letters within words while preserving outer characters.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/15_kentucky_friar/all_test.sh",
+      "tiny_python_projects-32243470/15_kentucky_friar/Makefile",
+      "tiny_python_projects-32243470/15_kentucky_friar/mk-outs.sh",
+      "tiny_python_projects-32243470/15_kentucky_friar/README.md",
+      "tiny_python_projects-32243470/15_kentucky_friar/solution1_regex.py",
+      "tiny_python_projects-32243470/15_kentucky_friar/solution2_re_compile.py",
+      "tiny_python_projects-32243470/15_kentucky_friar/solution3_no_regex.py",
+      "tiny_python_projects-32243470/15_kentucky_friar/test.py",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/banner.txt",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/banner.txt.out",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/blake.txt",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/blake.txt.out",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/dickinson.txt",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/dickinson.txt.out",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/raven.txt",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/raven.txt.out",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/shakespeare.txt",
+      "tiny_python_projects-32243470/15_kentucky_friar/inputs/shakespeare.txt.out",
+      "tiny_python_projects-32243470/16_scrambler/all_test.sh",
+      "tiny_python_projects-32243470/16_scrambler/intro.txt",
+      "tiny_python_projects-32243470/16_scrambler/Makefile",
+      "tiny_python_projects-32243470/16_scrambler/README.md",
+      "tiny_python_projects-32243470/16_scrambler/solution.py",
+      "tiny_python_projects-32243470/16_scrambler/test.py"
+    ],
+    "returnPrompt": "chapter-15-16-advanced-regex",
+    "assumptions": "Chapters 15 and 16 are grouped for their shared advanced text processing techniques, particularly involving regular expressions and string permutations."
+  },
+  {
+    "name": "Chapter 17-18: Mad Libs & Gematria",
+    "description": "Covers implementing the classic Mad Libs game with interactive user input and calculating word values based on Gematria principles.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/17_mad_libs/all_test.sh",
+      "tiny_python_projects-32243470/17_mad_libs/Makefile",
+      "tiny_python_projects-32243470/17_mad_libs/README.md",
+      "tiny_python_projects-32243470/17_mad_libs/solution1_regex.py",
+      "tiny_python_projects-32243470/17_mad_libs/solution2_no_regex.py",
+      "tiny_python_projects-32243470/17_mad_libs/test.py",
+      "tiny_python_projects-32243470/17_mad_libs/inputs/fox.txt",
+      "tiny_python_projects-32243470/17_mad_libs/inputs/help.txt",
+      "tiny_python_projects-32243470/17_mad_libs/inputs/no_blanks.txt",
+      "tiny_python_projects-32243470/17_mad_libs/inputs/romeo_juliet.txt",
+      "tiny_python_projects-32243470/18_gematria/all_test.sh",
+      "tiny_python_projects-32243470/18_gematria/asciitbl.py",
+      "tiny_python_projects-32243470/18_gematria/Makefile",
+      "tiny_python_projects-32243470/18_gematria/README.md",
+      "tiny_python_projects-32243470/18_gematria/solution.py",
+      "tiny_python_projects-32243470/18_gematria/test.py",
+      "tiny_python_projects-32243470/18_gematria/words.txt"
+    ],
+    "returnPrompt": "chapter-17-18-games-gematria",
+    "assumptions": "Chapters 17 and 18 are grouped for their focus on interactive text-based games and numerical manipulation of text."
+  },
+  {
+    "name": "Chapter 19: Workout of the Day (WOD)",
+    "description": "Develops a program to process workout data from CSV files, showcasing various parsing and data handling techniques including Pandas.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/19_wod/all_test.sh",
+      "tiny_python_projects-32243470/19_wod/Makefile",
+      "tiny_python_projects-32243470/19_wod/manual1.py",
+      "tiny_python_projects-32243470/19_wod/manual2_list_comprehension.py",
+      "tiny_python_projects-32243470/19_wod/manual3_map.py",
+      "tiny_python_projects-32243470/19_wod/README.md",
+      "tiny_python_projects-32243470/19_wod/requirements.txt",
+      "tiny_python_projects-32243470/19_wod/solution1.py",
+      "tiny_python_projects-32243470/19_wod/solution2.py",
+      "tiny_python_projects-32243470/19_wod/test.py",
+      "tiny_python_projects-32243470/19_wod/unit.py",
+      "tiny_python_projects-32243470/19_wod/using_csv1.py",
+      "tiny_python_projects-32243470/19_wod/using_csv2.py",
+      "tiny_python_projects-32243470/19_wod/using_csv3.py",
+      "tiny_python_projects-32243470/19_wod/using_pandas.py",
+      "tiny_python_projects-32243470/19_wod/inputs/bad-delimiter.tab",
+      "tiny_python_projects-32243470/19_wod/inputs/bad-empty.csv",
+      "tiny_python_projects-32243470/19_wod/inputs/bad-headers-only.csv",
+      "tiny_python_projects-32243470/19_wod/inputs/bad-headers.csv",
+      "tiny_python_projects-32243470/19_wod/inputs/bad-reps.csv",
+      "tiny_python_projects-32243470/19_wod/inputs/exercises.csv",
+      "tiny_python_projects-32243470/19_wod/inputs/silly-exercises.csv"
+    ],
+    "returnPrompt": "chapter-19-wod",
+    "assumptions": "This chapter is separated due to its higher number of solution files and specific input data handling requirements."
+  },
+  {
+    "name": "Chapter 20: Password Generator",
+    "description": "Builds a password generator using word lists from various sources, focusing on combining adjectives, nouns, and verbs.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/20_password/all_test.sh",
+      "tiny_python_projects-32243470/20_password/harvest.py",
+      "tiny_python_projects-32243470/20_password/Makefile",
+      "tiny_python_projects-32243470/20_password/README.md",
+      "tiny_python_projects-32243470/20_password/solution.py",
+      "tiny_python_projects-32243470/20_password/test.py",
+      "tiny_python_projects-32243470/20_password/unit.py",
+      "tiny_python_projects-32243470/20_password/const/adjs.txt",
+      "tiny_python_projects-32243470/20_password/const/nouns.txt",
+      "tiny_python_projects-32243470/20_password/const/verbs.txt",
+      "tiny_python_projects-32243470/20_password/scarlet/adjs.txt",
+      "tiny_python_projects-32243470/20_password/scarlet/nouns.txt",
+      "tiny_python_projects-32243470/20_password/scarlet/verbs.txt",
+      "tiny_python_projects-32243470/20_password/sonnets/adjs.txt",
+      "tiny_python_projects-32243470/20_password/sonnets/nouns.txt",
+      "tiny_python_projects-32243470/20_password/sonnets/verbs.txt"
+    ],
+    "returnPrompt": "chapter-20-password",
+    "assumptions": "This chapter is separated due to its specific focus on password generation and numerous associated word list files."
+  },
+  {
+    "name": "Chapter 21-22: Tic-Tac-Toe Games",
+    "description": "Implements the classic Tic-Tac-Toe game, including an interactive version and exploring type hints for improved code clarity.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/21_tictactoe/all_test.sh",
+      "tiny_python_projects-32243470/21_tictactoe/Makefile",
+      "tiny_python_projects-32243470/21_tictactoe/README.md",
+      "tiny_python_projects-32243470/21_tictactoe/solution1.py",
+      "tiny_python_projects-32243470/21_tictactoe/solution2.py",
+      "tiny_python_projects-32243470/21_tictactoe/test.py",
+      "tiny_python_projects-32243470/21_tictactoe/unit.py",
+      "tiny_python_projects-32243470/22_itictactoe/Makefile",
+      "tiny_python_projects-32243470/22_itictactoe/README.md",
+      "tiny_python_projects-32243470/22_itictactoe/solution1.py",
+      "tiny_python_projects-32243470/22_itictactoe/solution2_typed_dict.py",
+      "tiny_python_projects-32243470/22_itictactoe/typehints.py",
+      "tiny_python_projects-32243470/22_itictactoe/typehints2.py",
+      "tiny_python_projects-32243470/22_itictactoe/unit.py"
+    ],
+    "returnPrompt": "chapter-21-22-tictactoe",
+    "assumptions": "Chapters 21 and 22 are grouped as they both focus on variations and improvements to a Tic-Tac-Toe game implementation."
+  },
+  {
+    "name": "Extra: DNA Challenge",
+    "description": "An additional programming challenge focused on processing and manipulating DNA sequences.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/02_dna/Makefile",
+      "tiny_python_projects-32243470/extra/02_dna/README.adoc",
+      "tiny_python_projects-32243470/extra/02_dna/README.pdf",
+      "tiny_python_projects-32243470/extra/02_dna/test.py"
+    ],
+    "returnPrompt": "extra-dna-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  },
+  {
+    "name": "Extra: Spanish Challenge",
+    "description": "An additional programming challenge likely involving Spanish language processing or translation.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/02_spanish/Makefile",
+      "tiny_python_projects-32243470/extra/02_spanish/README.adoc",
+      "tiny_python_projects-32243470/extra/02_spanish/README.pdf",
+      "tiny_python_projects-32243470/extra/02_spanish/test.py"
+    ],
+    "returnPrompt": "extra-spanish-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  },
+  {
+    "name": "Extra: Strings Challenge",
+    "description": "An additional programming challenge focused on various string manipulation tasks.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/02_strings/Makefile",
+      "tiny_python_projects-32243470/extra/02_strings/README.adoc",
+      "tiny_python_projects-32243470/extra/02_strings/README.pdf",
+      "tiny_python_projects-32243470/extra/02_strings/test.py"
+    ],
+    "returnPrompt": "extra-strings-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  },
+  {
+    "name": "Extra: Lister Challenge",
+    "description": "An additional programming challenge centered on listing or categorizing items.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/03_lister/Makefile",
+      "tiny_python_projects-32243470/extra/03_lister/README.adoc",
+      "tiny_python_projects-32243470/extra/03_lister/README.pdf",
+      "tiny_python_projects-32243470/extra/03_lister/test.py"
+    ],
+    "returnPrompt": "extra-lister-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  },
+  {
+    "name": "Extra: Days Challenge",
+    "description": "An additional programming challenge related to processing or calculating information about days.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/04_days/Makefile",
+      "tiny_python_projects-32243470/extra/04_days/README.adoc",
+      "tiny_python_projects-32243470/extra/04_days/README.pdf",
+      "tiny_python_projects-32243470/extra/04_days/test.py"
+    ],
+    "returnPrompt": "extra-days-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  },
+  {
+    "name": "Extra: Head Utility",
+    "description": "An additional programming challenge to implement a utility similar to the Unix 'head' command for file viewing.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/06_head/Makefile",
+      "tiny_python_projects-32243470/extra/06_head/README.adoc",
+      "tiny_python_projects-32243470/extra/06_head/test.py",
+      "tiny_python_projects-32243470/extra/06_head/inputs/gettysburg.txt",
+      "tiny_python_projects-32243470/extra/06_head/inputs/sonnet-29.txt",
+      "tiny_python_projects-32243470/extra/06_head/inputs/the-bustle.txt"
+    ],
+    "returnPrompt": "extra-head-utility",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory, including specific input files."
+  },
+  {
+    "name": "Extra: Proteins Challenge",
+    "description": "An additional programming challenge focused on processing biological sequence data, specifically proteins.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/07_proteins/codons.dna",
+      "tiny_python_projects-32243470/extra/07_proteins/codons.rna",
+      "tiny_python_projects-32243470/extra/07_proteins/input.dna",
+      "tiny_python_projects-32243470/extra/07_proteins/input.rna",
+      "tiny_python_projects-32243470/extra/07_proteins/Makefile",
+      "tiny_python_projects-32243470/extra/07_proteins/README.adoc",
+      "tiny_python_projects-32243470/extra/07_proteins/README.pdf",
+      "tiny_python_projects-32243470/extra/07_proteins/test.py"
+    ],
+    "returnPrompt": "extra-proteins-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory, including specific biological data files."
+  },
+  {
+    "name": "Extra: RNA Challenge",
+    "description": "An additional programming challenge focused on processing RNA sequences and related biological data.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/08_rna/Makefile",
+      "tiny_python_projects-32243470/extra/08_rna/README.adoc",
+      "tiny_python_projects-32243470/extra/08_rna/README.pdf",
+      "tiny_python_projects-32243470/extra/08_rna/test.py",
+      "tiny_python_projects-32243470/extra/08_rna/inputs/input1.txt",
+      "tiny_python_projects-32243470/extra/08_rna/inputs/input2.txt"
+    ],
+    "returnPrompt": "extra-rna-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory, including specific input files."
+  },
+  {
+    "name": "Extra: Moog Challenge",
+    "description": "An additional programming challenge, likely involving sound, music, or numerical patterns inspired by Moog synthesizers.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/09_moog/Makefile",
+      "tiny_python_projects-32243470/extra/09_moog/README.adoc",
+      "tiny_python_projects-32243470/extra/09_moog/README.pdf",
+      "tiny_python_projects-32243470/extra/09_moog/test.py"
+    ],
+    "returnPrompt": "extra-moog-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  },
+  {
+    "name": "Extra: Whitmans Challenge",
+    "description": "An additional programming challenge, likely involving text processing or analysis related to Walt Whitman's works.",
+    "fileStructure": [
+      "tiny_python_projects-32243470/extra/10_whitmans/.gitignore",
+      "tiny_python_projects-32243470/extra/10_whitmans/Makefile",
+      "tiny_python_projects-32243470/extra/10_whitmans/README.adoc",
+      "tiny_python_projects-32243470/extra/10_whitmans/README.pdf",
+      "tiny_python_projects-32243470/extra/10_whitmans/requirements.txt",
+      "tiny_python_projects-32243470/extra/10_whitmans/solution.py",
+      "tiny_python_projects-32243470/extra/10_whitmans/test.py"
+    ],
+    "returnPrompt": "extra-whitmans-challenge",
+    "assumptions": "This is a distinct, self-contained programming challenge from the 'extra' directory."
+  }
+]
