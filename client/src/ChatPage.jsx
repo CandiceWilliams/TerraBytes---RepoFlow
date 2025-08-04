@@ -25,20 +25,18 @@ function ChatPage() {
                 }
             } catch (error) {
                 console.error("Error checking RAG status:", error);
-                // Optionally handle error state
             }
         };
 
-        // Initial check and then start polling
         checkRagReady();
-        intervalId = setInterval(checkRagReady, 3000); // Poll every 3 seconds
+        intervalId = setInterval(checkRagReady, 3000);
 
         return () => clearInterval(intervalId);
     }, []);
 
     const handleQuerySubmit = async (event) => {
         event.preventDefault();
-        setResponse("Thinking..."); // Set a loading state for the response
+        setResponse("Thinking...");
 
         try {
             const res = await axios.post(`${API_BASE_URL}/api/chat`, { query });
@@ -50,9 +48,9 @@ function ChatPage() {
     };
 
     return (
-        <div className="container-fluid d-flex flex-column vh-100 bg-dark text-white p-4">
-            <h1 className="text-center text-info mb-4">RepoFlow Chat</h1>
-            
+        <div className="container-fluid vh-100 bg-dark text-white d-flex flex-column p-4">
+            <h1 className="text-center text-info mb-4">💬 RepoFlow Chat</h1>
+
             {isLoading && (
                 <div className="text-center my-auto">
                     <div className="spinner-border text-info" role="status">
@@ -61,28 +59,38 @@ function ChatPage() {
                     <p className="mt-3">Loading RAG model into memory. This may take a moment...</p>
                 </div>
             )}
-            
+
             {!isLoading && !isRagReady && (
                 <div className="alert alert-danger text-center my-auto" role="alert">
                     The RAG model is not ready. Please select a workspace first.
                 </div>
             )}
-            
+
             {!isLoading && isRagReady && (
                 <>
-                    <div className="flex-grow-1 overflow-auto p-3 mb-3 bg-secondary rounded" style={{ minHeight: '100px' }}>
-                        <div className="mb-2">
-                            <span className="fw-bold text-info">You:</span> {query}
-                        </div>
-                        <div>
-                            <span className="fw-bold text-success">AI:</span> {response}
-                        </div>
+                    <div className="flex-grow-1 overflow-auto mb-3 p-3 bg-secondary rounded border border-info" style={{ minHeight: '120px' }}>
+                        {query && (
+                            <div className="mb-2">
+                                <span className="fw-bold text-info">You:</span>
+                                <div className="bg-dark text-white p-2 rounded border border-info mt-1">
+                                    {query}
+                                </div>
+                            </div>
+                        )}
+                        {response && (
+                            <div>
+                                <span className="fw-bold text-success">AI:</span>
+                                <div className="bg-dark text-white p-2 rounded border border-success mt-1">
+                                    {response}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
-                    <form onSubmit={handleQuerySubmit} className="d-flex mt-auto">
+                    <form onSubmit={handleQuerySubmit} className="d-flex">
                         <input
                             type="text"
-                            className="form-control me-2 bg-secondary text-white border-info"
+                            className="form-control me-2 bg-dark text-white border-info"
                             placeholder="Enter your query..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
