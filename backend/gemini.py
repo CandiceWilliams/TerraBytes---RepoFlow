@@ -6,7 +6,7 @@ import google.generativeai as genai
 
 # Configure the Gemini API key.
 try:
-    genai.configure(api_key="AIzaSyDAkKSlkPXRva8ywSZKOUt0zpxReHKTweo")
+    genai.configure(api_key="GOOGLE_API_KEY")
 except KeyError:
     print("FATAL ERROR: 'GOOGLE_API_KEY' environment variable not set.")
     print("Please set it before running the script.")
